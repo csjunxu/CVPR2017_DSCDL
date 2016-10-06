@@ -12,7 +12,7 @@
 % Up    ,Us    : Output Projection Matrix for Alpha
 % 
 
-function [Alphap, Alphas, Xp, Xs, Dp, Ds, Wp, Ws, Up, Us, Ps, f] = ADPU_Double_Semi_Coupled_DL(Alphap, Alphas, Xp, Xs, Dp, Ds, Wp, Ws, par)
+function [Ac, An, Xc, Xn, Dc, Dn, Up, Us, Ps, f] = ADPU_Double_Semi_Coupled_DL(Ac, An, Xc, Xn, Dc, Dn, par)
 
 %% parameter setting
 param.lambda        = 	    par.lambda1; % not more than 20 non-zeros coefficients
@@ -24,66 +24,55 @@ param.L = par.L;
 f = 0;
 
 %% Initialize Us, Up as I
+Us = eye(size(Dn, 2));
+Up = eye(size(Dn, 2));
 
-Us = Ws; 
-Up = Wp; 
-
-%% Initialize Ps as 0 matrix
-Ps = zeros(size(Xs));
-
-%% Iteratively solve D A U
+%% Iteratively solve A D U
 
 for t = 1 : par.nIter
     
     %% Updating Alphas and Alphap
     f_prev = f;
-    Alphas = mexLasso([Xs - Ps; par.sqrtmu * Up * full(Alphap)], [Ds; par.sqrtmu * Us],param);
-    Alphap = mexLasso([Xp; par.sqrtmu * Us * full(Alphas)], [Dp; par.sqrtmu * Up],param);
+    An = mexLasso([Xn; par.sqrtmu * Up * full(Ac)], [Dn; par.sqrtmu * Us],param);
+    Ac = mexLasso([Xc; par.sqrtmu * Us * full(An)], [Dc; par.sqrtmu * Up],param);
     dictSize = par.K;
 
     %% Updating Ds and Dp 
     for i=1:dictSize
-       ai        =    Alphas(i,:);
-       Y         =    Xs - Ps - Ds * Alphas + Ds(:,i) * ai;
+       ai        =    An(i,:);
+       Y         =    Xn - Dn * An + Dn(:,i) * ai;
        di        =    Y * ai';
        di        =    di ./ (norm(di,2) + eps);
-       Ds(:,i)   =    di;
+       Dn(:,i)   =    di;
     end
 
     for i=1:dictSize
-       ai        =    Alphap(i,:);
-       Y         =    Xp - Dp * Alphap + Dp(:,i) * ai;
+       ai        =    Ac(i,:);
+       Y         =    Xc - Dc * Ac + Dc(:,i) * ai;
        di        =    Y * ai';
        di        =    di ./ (norm(di,2) + eps);
-       Dp(:,i)  =    di;
+       Dc(:,i)  =    di;
     end
-    
-    %% Updating Ps
-    Ps = (Xs - Ds * Alphas) / (1 + par.nup);
-
     %% Updating Ws and Wp => Updating Us and Up
-    Us = (1 - par.rho) * Us  + par.rho * Up * Alphap * Alphas' / ( Alphas * Alphas' + par.nu * eye(size(Alphas, 1)));
-    Up = (1 - par.rho) * Up  + par.rho * Us * Alphas * Alphap' / ( Alphap * Alphap' + par.nu * eye(size(Alphap, 1)));
-    Ws = Up /Us;
-    Wp = Us /Up;
+    Us = (1 - par.rho) * Us  + par.rho * Up * Ac * An' / ( An * An' + par.nu * eye(size(An, 1)));
+    Up = (1 - par.rho) * Up  + par.rho * Us * An * Ac' / ( Ac * Ac' + par.nu * eye(size(Ac, 1)));
 
     %% Find if converge (NEED MODIFICATION)
-    P1 = Xp - Dp * Alphap;
+    P1 = Xc - Dc * Ac;
     P1 = P1(:)'*P1(:) / 2;
-    P2 = par.lambda1 *  norm(Alphap, 1);    
-    P3 = Us * Alphas - Up * Alphap; 
+    P2 = par.lambda1 *  norm(Ac, 1);    
+    P3 = Us * An - Up * Ac; 
     P3 = P3(:)'*P3(:) / 2;
     P4 = par.nu * norm(Up, 'fro');
     fp = 1 / 2 * P1 + P2 + par.mu * (P3 + P4);
     
-    P1 = Xs - Ds * Alphas - Ps;
+    P1 = Xn - Dn * An;
     P1 = P1(:)'*P1(:) / 2;
-    P2 = par.lambda1 *  norm(Alphas, 1);    
-    P3 = Us * Alphas - Up * Alphap; 
+    P2 = par.lambda1 *  norm(An, 1);    
+    P3 = Us * An - Up * Ac; 
     P3 = P3(:)'*P3(:) / 2;
     P4 = par.nu * norm(Us, 'fro');  
-    P5 = par.nup * norm(Ps, 'fro'); 
-    fs = 1 / 2 * P1 + P2 + par.mu * (P3 + P4 + P5);
+    fs = 1 / 2 * P1 + P2 + par.mu * (P3 + P4);
     
     f = fp + fs;
 	
@@ -91,7 +80,6 @@ for t = 1 : par.nIter
     if (abs(f_prev - f) / f < par.epsilon)
         break;
     end
-    fprintf('Energy: %d\n',f);
-    save tempDSCDL_BID_Dict_6x6x3_ADPU.mat Ds Dp Us Up Ws Wp par param;
+    fprintf('Energy %d: %d\n', t, f);
 end
     

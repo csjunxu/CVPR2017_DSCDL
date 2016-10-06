@@ -35,8 +35,8 @@ seq = find(idx2);
 seg = [0; seq; length(cls_idx)];
 
 load ../CVPR2017_PGPD_BID/PG-GMM_TrainingCode/Kodak24_PGs_6x6_3_10_33.mat;
-for c = 1 : cls_num
-    idx = find(cls_idx == c);
+for   i = 1:length(seg)-1
+    idx    =   s_idx(seg(i)+1:seg(i+1));
     cls =   cls_idx(idx(1));
     % given noisy patches, search corresponding clean ones via k-NN
     NPG = XN(:,idx);

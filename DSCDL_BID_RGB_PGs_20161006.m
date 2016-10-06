@@ -18,7 +18,7 @@ im_num = length(TT_im_dir);
 %% load parameters and dictionary
 load Data/params.mat par param;
 load Data/Dict_DSCDL_backup_flexible_20160724T132738.mat Dict;
-load Data/EMGM_8x8_100_knnNI2BS500Train_20160722T082406.mat;
+load Data/GMM_RGB_PGs_10_6x6_33_20161006T220226.mat;
 par.cls_num = 100;
 for lambda = 0.01
     param.lambda = lambda;
