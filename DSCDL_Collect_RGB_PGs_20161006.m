@@ -3,11 +3,12 @@ addpath('Utilities');
 TrainingNoisy = '../TrainingData/RGBNoisy/';
 
 load Data/params.mat;
-% load ../CVPR2017_PGPD_BID/PG-GMM_TrainingCode/Kodak24_PGs_6x6_3_10_33.mat;
 load ../CVPR2017_PGPD_BID/PG-GMM_TrainingCode/PGGMM_RGB_6x6_3_win15_nlsp10_delta0.002_cls33.mat;
 % Parameters Setting
-par.nlsp = 10;
-par.Win = 15;   % size of window around the patch
+par.ps = ps;
+par.cls_num = cls_num;
+par.nlsp = nlsp;
+par.Win = win;   % size of window around the patch
 num_patch_N = 200000;
 par.R_thresh = 0.05;
 
@@ -33,16 +34,17 @@ idx2 = idx(1:end-1) - idx(2:end);
 seq = find(idx2);
 seg = [0; seq; length(cls_idx)];
 
+load ../CVPR2017_PGPD_BID/PG-GMM_TrainingCode/Kodak24_PGs_6x6_3_10_33.mat;
 for c = 1 : cls_num
     idx = find(cls_idx == c);
     cls =   cls_idx(idx(1));
     % given noisy patches, search corresponding clean ones via k-NN
-    NP = XN(:,idx);
-    CP = Xc{cls};
-    PIDX = knnsearch(NP', CP');
+    NPG = XN(:,idx);
+    CPG = Xc{cls};
+    PGIDX = knnsearch(NPG', CPG');
     Xn{cls} = XN(:, idx);
-    Xc{cls} = Xc{cls}(:,PIDX);
+    Xc{cls} = CPG(:,PGIDX);
 end
 % save model
-GMM_model = ['Data/GMM_RGB_PG_' num2str(par.nlsp) '_' num2str(par.ps) 'x' num2str(par.ps) '_' num2str(cls_num) '_' datestr(now, 30) '.mat'];
+GMM_model = ['Data/GMM_RGB_PGs_' num2str(par.nlsp) '_' num2str(par.ps) 'x' num2str(par.ps) '_' num2str(cls_num) '_' datestr(now, 30) '.mat'];
 save(GMM_model, 'model', 'Xn','Xc','cls_num');
