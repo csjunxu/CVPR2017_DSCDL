@@ -3,7 +3,7 @@ function im_out = DSCDL_RGB_PG_BID_20161011(IMin,IM_GT,model,DSCDL,par,param)
 im_out = IMin;
 fprintf('nInnerLoop: The initial PSNR = %2.4f, SSIM = %2.4f. \n', csnr( IMin*255,IM_GT*255, 0, 0 ), cal_ssim( IMin*255, IM_GT*255, 0, 0 ));
 for t = 1 : par.nInnerLoop
-    if t == 1
+    if mod(t -1,2) == 0
         psf = fspecial('gaussian', par.ps+2, 2.2);
         [nDCnlYH,~,~,par] = Image2PGs( convn(im_out, psf, 'same') - im_out, par);
         AN = zeros(par.K, size(nDCnlYH, 2));
