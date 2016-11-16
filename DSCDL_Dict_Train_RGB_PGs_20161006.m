@@ -1,4 +1,4 @@
-clear;clc;
+clear;
 addpath('Data');
 addpath('Utilities');
 addpath('SPAMS');
@@ -24,7 +24,7 @@ param.K = par.K;
 param.lambda = par.lambda1;
 param.lambda2 = par.lambda2;
 param.iter=300;
-% param.L = par.ps^2;
+param.L = par.ps^2;
 for i = 1 : par.cls_num
     XN_t = double(Xn{i});
     XC_t = double(Xc{i});
@@ -32,7 +32,7 @@ for i = 1 : par.cls_num
         XN_t = XN_t(:,1:2e4);
         XC_t = XC_t(:,1:2e4);
     end
-    fprintf('DSCDL:_RGB_PGs: Cluster: %d\n', i);
+    fprintf('DSCDL_RGB_PGs: Cluster: %d\n', i);
     D = mexTrainDL([XN_t;XC_t], param);
     Dn = D(1:size(XN_t,1),:);
     Dc = D(size(XN_t,1)+1:end,:);
