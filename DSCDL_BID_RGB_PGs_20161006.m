@@ -20,9 +20,9 @@ load Data/DSCDL_Dict_RGB_PGs_10_6x6x3_31_BID_20161006.mat DSCDL;
 load Data/GMM_RGB_PGs_10_6x6x3_31_20161006T220226.mat;
 par.cls_num = 31;
 
-for lambda = [0.015 0.02]
+for lambda = 0.012:0.002:0.018
     param.lambda = lambda;
-    for lambda2 = [0.01 0.001]
+    for lambda2 = [0.001]
         param.lambda2 = lambda2;
         for sqrtmu = 0.01
             par.sqrtmu = sqrtmu;
