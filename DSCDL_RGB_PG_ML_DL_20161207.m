@@ -10,7 +10,8 @@ load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 % lambda2 is not important
 % sqrtmu  is not important
 % tunable parameters
-par.lambda1         =       0.01;
+par.lambda1         =       [0.01 0.1];
+
 par.lambda2         =       0.001;
 par.mu              =       0.01;
 par.sqrtmu          =       sqrt(par.mu);
@@ -52,6 +53,6 @@ for i = 1 : par.cls_num
     An = Ac;
     clear D;
     [DSCDL, par] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par);
-    Dict_BID = sprintf('Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_20161207.mat');
+    Dict_BID = sprintf('Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_%2.4f_%2.4f.mat',par.lambda1(1),par.lambda1(2));
     save(Dict_BID,'DSCDL','par');
 end
