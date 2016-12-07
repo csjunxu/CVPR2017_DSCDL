@@ -1,7 +1,8 @@
 function im_out = DSCDL_RGB_PG_RID(IMin,IM_GT,model,DSCDL,par,param)
+%% modified on 20161207 
+
 %% Initialization
 im_out = IMin;
-fprintf('nInnerLoop: The initial PSNR = %2.4f, SSIM = %2.4f. \n', csnr( IMin*255,IM_GT*255, 0, 0 ), cal_ssim( IMin*255, IM_GT*255, 0, 0 ));
 for t = 1 : par.nInnerLoop
     if mod(t -1,2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
@@ -67,5 +68,7 @@ for t = 1 : par.nInnerLoop
     end
     %% PGs to Image
     [im_out, par]  = PGs2Image(X_hat,W,par);
-    fprintf('nInnerLoop: The final PSNR = %2.4f, SSIM = %2.4f. \n', csnr( im_out*255, IM_GT*255, 0, 0 ),cal_ssim( im_out*255, IM_GT*255, 0, 0 ));
+    par.PSNR(par.IMindex, t) = csnr( im_out*255, IM_GT*255, 0, 0 );
+    par.SSIM(par.IMindex, t) = cal_ssim( im_out*255, IM_GT*255, 0, 0 );
+    fprintf('nInnerLoop %d: PSNR = %2.4f, SSIM = %2.4f. \n', t, par.PSNR(par.IMindex, t), par.SSIM(par.IMindex, t) );
 end
