@@ -40,7 +40,6 @@ save Data/MultiLayer_Param_20161207_1.mat par param;
 %% begin dictionary learning
 par.PSNR = zeros(par.cls_num, par.Layer+1);
 par.SSIM = zeros(par.cls_num, par.Layer+1);
-load Data/DSCDL_RGB_PGs_ML_DL_10_6x6_33_BID_20161006.mat
 for i = 1 : par.cls_num
     XN = double(Xn{i});
     XC = double(Xc{i});
