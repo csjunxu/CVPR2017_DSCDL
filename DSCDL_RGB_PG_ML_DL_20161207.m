@@ -9,16 +9,18 @@ load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 % lambda is important;
 % lambda2 is not important
 % sqrtmu  is not important
-% 
-par.cls_num            =    cls_num;
-par.step               =    3;
-par.ps                =   6;
-par.rho = 5e-2;
+% tunable parameters
 par.lambda1         =       0.01;
 par.lambda2         =       0.001;
 par.mu              =       0.01;
 par.sqrtmu          =       sqrt(par.mu);
 par.nu              =       0.1;
+
+% fixed parameters
+par.cls_num            =    cls_num;
+par.step               =    3;
+par.ps                =   6;
+par.rho = 5e-2;
 par.nIter           =       100;
 par.epsilon         =       5e-3;
 par.t0              =       5;
