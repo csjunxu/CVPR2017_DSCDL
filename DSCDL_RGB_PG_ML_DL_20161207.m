@@ -1,7 +1,6 @@
 clear;
 addpath('Data');
 addpath('Utilities');
-addpath('SPAMS');
 
 task = 'BID';
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
@@ -28,17 +27,17 @@ param.iter=300;
 param.L = par.ps^2;
 %
 Layer = 2;
-% PSNR = zeros(par.cls_num,Layer+1);
-% SSIM = zeros(par.cls_num,Layer+1);
+PSNR = zeros(par.cls_num,Layer+1);
+SSIM = zeros(par.cls_num,Layer+1);
 load Data/DSCDL_RGB_PGs_ML_DL_10_6x6_33_BID_20161006.mat
-for i = 26 : par.cls_num
+for i = 1 : par.cls_num
     XN = double(Xn{i});
     XC = double(Xc{i});
     if size(XN, 2)>2e4
         XN = XN(:,1:2e4);
         XC = XC(:,1:2e4);
     end
-    fprintf('DSCDL_RGB_PGs: Cluster: %d\n', i);
+    fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', i);
     PSNR(i ,1) = csnr( XN*255, XC*255, 0, 0 );
     SSIM(i ,1) = cal_ssim( XN*255, XC*255, 0, 0 );
     fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(i ,1), SSIM(i ,1) );
