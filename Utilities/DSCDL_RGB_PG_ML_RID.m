@@ -1,9 +1,8 @@
 function [im_out, par] = DSCDL_RGB_PG_ML_RID(IMin,IM_GT,model,DSCDL,par,param)
-%% Modified on 20161207
+%% Modified on 20161207 for multilayer real image denoising
 
 %% Initialization
 im_out = IMin;
-fprintf('nInnerLoop: The initial PSNR = %2.4f, SSIM = %2.4f. \n', csnr( IMin*255,IM_GT*255, 0, 0 ), cal_ssim( IMin*255, IM_GT*255, 0, 0 ));
 for t = 1 : par.nInnerLoop
     if mod(t -1,2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
