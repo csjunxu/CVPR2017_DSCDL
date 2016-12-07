@@ -5,7 +5,11 @@ addpath('Utilities');
 task = 'BID';
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 % load Data/rnd_RGB_PG_6x6_1922650_20161006T194212.mat;
-% Parameters Setting
+%% Parameters Setting
+% lambda is important;
+% lambda2 is not important
+% sqrtmu  is not important
+% 
 par.cls_num            =    cls_num;
 par.step               =    3;
 par.ps                =   6;
