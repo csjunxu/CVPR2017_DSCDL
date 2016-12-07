@@ -9,15 +9,19 @@ load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 % lambda is important;
 % lambda2 is not important
 % sqrtmu  is not important
+
+% the number of layers in DL
+par.Layer = 2;
 % tunable parameters
 par.lambda1         =       [0.01 0.1];
-
 par.lambda2         =       0.001;
+
+% temporally fixed parameters
 par.mu              =       0.01;
 par.sqrtmu          =       sqrt(par.mu);
 par.nu              =       0.1;
 
-% fixed parameters
+% fully fixed parameters
 par.cls_num            =    cls_num;
 par.step               =    3;
 par.ps                =   6;
@@ -32,8 +36,9 @@ param.lambda = par.lambda1;
 param.lambda2 = par.lambda2;
 param.iter=300;
 param.L = par.ps^2;
-%
-par.Layer = 2;
+
+
+%% begin dictionary learning
 par.PSNR = zeros(par.cls_num, par.Layer+1);
 par.SSIM = zeros(par.cls_num, par.Layer+1);
 load Data/DSCDL_RGB_PGs_ML_DL_10_6x6_33_BID_20161006.mat
