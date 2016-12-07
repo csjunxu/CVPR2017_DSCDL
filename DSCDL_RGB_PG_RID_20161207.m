@@ -16,17 +16,17 @@ im_num = length(TT_im_dir);
 
 %% load parameters and dictionary
 load Data/params.mat par param;
-load Data/DSCDL_Dict_RGB_PGs_10_6x6x3_31_BID_20161006.mat DSCDL;
-load Data/GMM_RGB_PGs_10_6x6x3_31_20161006T220226.mat;
+load Data/DSCDL_RGB_PG_ML_DL_10_6x6_31_BID_20161006.mat DSCDL;
+load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
 
-for lambda = 0.012:0.002:0.018
+for lambda = 0.01:0.002:0.02
     param.lambda = lambda;
     for lambda2 = [0.001]
         param.lambda2 = lambda2;
         for sqrtmu = 0.01
             par.sqrtmu = sqrtmu;
-            for nInnerLoop = 4
+            for nInnerLoop = 2
                 par.nInnerLoop = nInnerLoop;
                 PSNR = [];
                 SSIM = [];
@@ -47,7 +47,7 @@ for lambda = 0.012:0.002:0.018
                     %                     Continue = true;
                     %                     while Continue
                     % fprintf('Iter: %d \n', nOuterLoop);
-                    IMout = DSCDL_RGB_PG_BID_20161202(IMin,IM_GT,model,DSCDL,par,param);
+                    IMout = DSCDL_RGB_PG_RID(IMin,IM_GT,model,DSCDL,par,param);
                     % Noise Level Estimation
                     %                         nSig = NoiseEstimation(IMout*255,6);
                     %                         fprintf('The noise level is %2.4f.\n',nSig);
@@ -67,7 +67,7 @@ for lambda = 0.012:0.002:0.018
                 end
                 mPSNR = mean(PSNR);
                 mSSIM = mean(SSIM);
-                savename = ['Real_DSCDL_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.mat'];
+                savename = ['Real_DSCDL_RID_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.mat'];
                 save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
             end
         end
