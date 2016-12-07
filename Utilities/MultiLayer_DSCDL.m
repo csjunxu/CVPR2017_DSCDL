@@ -27,8 +27,8 @@ param.L = par.L;
 f = 0;
 
 %% Initialize Us, Up as I
-Us = eye(size(Dn, 2));
-Up = eye(size(Dn, 2));
+Un = eye(size(Dn, 2));
+Uc = eye(size(Dn, 2));
 
 
 for L = 1: par.Layer
@@ -41,8 +41,8 @@ for L = 1: par.Layer
         
         %% Updating Alphas and Alphap
         f_prev = f;
-        An = mexLasso([Xn; par.sqrtmu * Up * full(Ac)], [Dn; par.sqrtmu * Us],param);
-        Ac = mexLasso([Xc; par.sqrtmu * Us * full(An)], [Dc; par.sqrtmu * Up],param);
+        An = mexLasso([Xn; par.sqrtmu * Uc * full(Ac)], [Dn; par.sqrtmu * Un],param);
+        Ac = mexLasso([Xc; par.sqrtmu * Un * full(An)], [Dc; par.sqrtmu * Uc],param);
         dictSize = par.K;
         
         %% Updating Ds and Dp
@@ -62,24 +62,24 @@ for L = 1: par.Layer
             Dc(:,i)  =    di;
         end
         %% Updating Ws and Wp => Updating Us and Up
-        Us = (1 - par.rho) * Us  + par.rho * Up * Ac * An' / ( An * An' + par.nu * eye(size(An, 1)));
-        Up = (1 - par.rho) * Up  + par.rho * Us * An * Ac' / ( Ac * Ac' + par.nu * eye(size(Ac, 1)));
+        Un = (1 - par.rho) * Un  + par.rho * Uc * Ac * An' / ( An * An' + par.nu * eye(size(An, 1)));
+        Uc = (1 - par.rho) * Uc  + par.rho * Un * An * Ac' / ( Ac * Ac' + par.nu * eye(size(Ac, 1)));
         
         %% Find if converge (NEED MODIFICATION)
         P1 = Xc - Dc * Ac;
         P1 = P1(:)'*P1(:) / 2;
         P2 = par.lambda1 *  norm(Ac, 1);
-        P3 = Us * An - Up * Ac;
+        P3 = Un * An - Uc * Ac;
         P3 = P3(:)'*P3(:) / 2;
-        P4 = par.nu * norm(Up, 'fro');
+        P4 = par.nu * norm(Uc, 'fro');
         fp = 1 / 2 * P1 + P2 + par.mu * (P3 + P4);
         
         P1 = Xn - Dn * An;
         P1 = P1(:)'*P1(:) / 2;
         P2 = par.lambda1 *  norm(An, 1);
-        P3 = Us * An - Up * Ac;
+        P3 = Un * An - Uc * Ac;
         P3 = P3(:)'*P3(:) / 2;
-        P4 = par.nu * norm(Us, 'fro');
+        P4 = par.nu * norm(Un, 'fro');
         fs = 1 / 2 * P1 + P2 + par.mu * (P3 + P4);
         
         f = fp + fs;
@@ -94,7 +94,7 @@ for L = 1: par.Layer
     Xn = Dn*An;
     par.PSNR(par.i, L+1) = csnr( Xn*255, Xc*255, 0, 0 );
     par.SSIM(par.i, L+1) = cal_ssim( Xn*255, Xc*255, 0, 0 );
-    fprintf('The %dth final PSNR = %2.4f, SSIM = %2.4f. \n', L, par.PSNR(par.i ,L+1), par.SSIM(par.i ,L+1) );
+    fprintf('The %d-th final PSNR = %2.4f, SSIM = %2.4f. \n', L, par.PSNR(par.i ,L+1), par.SSIM(par.i ,L+1) );
     %% save results
     DSCDL.DC{i,L} = Dc;
     DSCDL.DN{i,L} = Dn;
