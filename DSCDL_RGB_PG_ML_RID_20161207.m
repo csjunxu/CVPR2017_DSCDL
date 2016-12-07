@@ -1,7 +1,6 @@
 clear;
 addpath('Data');
 addpath('Utilities');
-addpath('SPAMS');
 % GT_Original_image_dir = 'C:\Users\csjunxu\Desktop\CVPR2017\cc_Results\Real_MeanImage\';
 % GT_fpath = fullfile(GT_Original_image_dir, '*.png');
 % TT_Original_image_dir = 'C:\Users\csjunxu\Desktop\CVPR2017\cc_Results\Real_NoisyImage\';
@@ -50,7 +49,7 @@ for lambda = 0.01:0.002:0.02
                 SSIM = par.SSIM;
                 mPSNR = mean(PSNR);
                 mSSIM = mean(SSIM);
-                savename = ['Real_DSCDL_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.mat'];
+                savename = ['Real_DSCDL_ML_RID_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.mat'];
                 save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
             end
         end
