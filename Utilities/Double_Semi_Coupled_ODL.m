@@ -12,7 +12,7 @@
 % Up    ,Us    : Output Projection Matrix for Alpha
 % 
 
-function [Ac, An, Dc, Dn, Up, Us, f] = ADPU_Double_Semi_Coupled_DL(Ac, An, Xc, Xn, Dc, Dn, par)
+function [Ac, An, Dc, Dn, Up, Us, f] = Double_Semi_Coupled_ODL(Ac, An, Xc, Xn, Dc, Dn, par)
 
 %% parameter setting
 param.lambda        = 	    par.lambda1; % not more than 20 non-zeros coefficients
