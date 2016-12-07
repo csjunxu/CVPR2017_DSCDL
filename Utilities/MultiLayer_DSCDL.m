@@ -19,9 +19,7 @@ par.SSIM(par.i ,1) = cal_ssim( Xn*255, Xc*255, 0, 0 );
 fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', par.PSNR(par.i ,1), par.SSIM(par.i ,1) );
 
 
-%% parameter setting
-param.lambda        = 	    par.lambda1; % not more than 20 non-zeros coefficients
-param.lambda2       =       par.lambda2;
+%% fixed parameter setting
 param.mode          = 	    2;       % penalized formulation
 param.approx=0;
 param.K = par.K;
@@ -34,9 +32,11 @@ Up = eye(size(Dn, 2));
 
 
 for L = 1: par.Layer
+    %% tunable parameters
+    param.lambda        = 	    par.lambda1(L);
+    param.lambda2       =       par.lambda2;
     
     %% Iteratively solve A D U
-    
     for t = 1 : par.nIter
         
         %% Updating Alphas and Alphap
@@ -101,6 +101,6 @@ for L = 1: par.Layer
     DSCDL.UC{i,L} = Uc;
     DSCDL.UN{i,L} = Un;
     DSCDL.f{i,L} = f;
-    Dict_BID = sprintf('Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_20161207.mat');
+    Dict_BID = sprintf('Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_%2.4f_%2.4f.mat',par.lambda1(1),par.lambda1(2));
     save(Dict_BID,'DSCDL','par');
 end
