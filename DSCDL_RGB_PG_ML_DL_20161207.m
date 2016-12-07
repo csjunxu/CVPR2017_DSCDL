@@ -32,9 +32,9 @@ param.lambda2 = par.lambda2;
 param.iter=300;
 param.L = par.ps^2;
 %
-Layer = 2;
-PSNR = zeros(par.cls_num,Layer+1);
-SSIM = zeros(par.cls_num,Layer+1);
+par.Layer = 2;
+par.PSNR = zeros(par.cls_num, par.Layer+1);
+par.SSIM = zeros(par.cls_num, par.Layer+1);
 load Data/DSCDL_RGB_PGs_ML_DL_10_6x6_33_BID_20161006.mat
 for i = 1 : par.cls_num
     XN = double(Xn{i});
@@ -43,30 +43,15 @@ for i = 1 : par.cls_num
         XN = XN(:,1:2e4);
         XC = XC(:,1:2e4);
     end
+    par.i = i;
     fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', i);
-    PSNR(i ,1) = csnr( XN*255, XC*255, 0, 0 );
-    SSIM(i ,1) = cal_ssim( XN*255, XC*255, 0, 0 );
-    fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(i ,1), SSIM(i ,1) );
     D = mexTrainDL([XN;XC], param);
     Dn = D(1:size(XN,1),:);
     Dc = D(size(XN,1)+1:end,:);
-    Alphac = mexLasso([XN;XC], D, param);
-    Alphan = Alphac;
+    Ac = mexLasso([XN;XC], D, param);
+    An = Ac;
     clear D;
-    for L = 1:Layer
-        [Alphac, Alphan, Dc, Dn, Uc, Un, f] = ADPU_Double_Semi_Coupled_DL(Alphac, Alphan, XC, XN, Dc, Dn, par);
-        %%
-        XN = Dn*Alphan;
-        PSNR(i, L+1) = csnr( XN*255, XC*255, 0, 0 );
-        SSIM(i, L+1) = cal_ssim( XN*255, XC*255, 0, 0 );
-        fprintf('The %dth final PSNR = %2.4f, SSIM = %2.4f. \n', L, PSNR(i ,L+1), SSIM(i ,L+1) );
-        %% save results
-        DSCDL.DC{i,L} = Dc;
-        DSCDL.DN{i,L} = Dn;
-        DSCDL.UC{i,L} = Uc;
-        DSCDL.UN{i,L} = Un;
-        DSCDL.f{i,L} = f;
-        Dict_BID = sprintf('Data/DSCDL_RGB_PGs_ML_DL_10_6x6_33_%s_20161006.mat',task);
-        save(Dict_BID,'DSCDL');
-    end
+    [DSCDL, par] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par);
+    Dict_BID = sprintf('Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_20161207.mat');
+    save(Dict_BID,'DSCDL','par');
 end
