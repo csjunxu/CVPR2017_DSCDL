@@ -47,7 +47,9 @@ for lambda = 0.01:0.002:0.02
                     %                     Continue = true;
                     %                     while Continue
                     % fprintf('Iter: %d \n', nOuterLoop);
-                    IMout = DSCDL_RGB_PG_RID(IMin,IM_GT,model,DSCDL,par,param);
+                    par.IMindex = i;
+                    %% ML_RID
+                    [IMout, par] = DSCDL_RGB_PG_ML_RID(IMin,IM_GT,model,DSCDL,par,param);
                     % Noise Level Estimation
                     %                         nSig = NoiseEstimation(IMout*255,6);
                     %                         fprintf('The noise level is %2.4f.\n',nSig);
@@ -58,13 +60,11 @@ for lambda = 0.01:0.002:0.02
                     %                             IMin = IMout;
                     %                         end
                     %                     end
-                    fprintf('The final PSNR = %2.4f, SSIM = %2.4f. \n', csnr( IMout*255,IM_GT*255, 0, 0 ), cal_ssim( IMout*255, IM_GT*255, 0, 0 ));
                     %% output
-%                     imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
-                    PSNR =[PSNR csnr( IMout*255,IM_GT*255, 0, 0 )];
-                    SSIM = [SSIM cal_ssim( IMout*255, IM_GT*255, 0, 0 )];
-                    fprintf('The final PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(end), SSIM(end));
+                    % imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
                 end
+                PSNR = par.PSNR;
+                SSIM = par.SSIM;
                 mPSNR = mean(PSNR);
                 mSSIM = mean(SSIM);
                 savename = ['Real_DSCDL_RID_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.mat'];
