@@ -6,31 +6,17 @@
 % Wp    ,Ws    : Initial Projection Matrix
 % par          : Parameters 
 %
-%
 % Output
 % Alphap,Alphas: Output sparse coefficient of two domains
 % Dp    ,Ds    : Output Coupled Dictionaries
 % Up    ,Us    : Output Projection Matrix for Alpha
 % 
 
-function [Alphap, Alphas, Xp, Xs, Dp, Ds, Wp, Ws, Up, Us, f] = Double_Semi_Coupled_DL(Alphap, Alphas, Xp, Xs, Dp, Ds, Wp, Ws, par)
+function [Ac, An, Dc, Dn, Up, Us, f] = Double_Semi_Coupled_DL(Ac, An, Xc, Xn, Dc, Dn, par)
 
 %% parameter setting
-
-[dimX, numX]        =       size(Xp);
-dimY                =       size(Alphap, 1);
-numD                =       size(Dp, 2);
-rho                 =       par.rho;
-lambda1             =       par.lambda1;
-lambda2             =       par.lambda2;
-mu                  =       par.mu;
-sqrtmu              =       sqrt(mu);
-nu                  =       par.nu;
-nIter               =       par.nIter;
-t0                  =       par.t0;
-epsilon             =       par.epsilon;
-param.lambda        = 	    lambda1; % not more than 20 non-zeros coefficients
-param.lambda2       =       lambda2;
+param.lambda        = 	    par.lambda1; % not more than 20 non-zeros coefficients
+param.lambda2       =       par.lambda2;
 param.mode          = 	    2;       % penalized formulation
 param.approx=0;
 param.K = par.K;
@@ -38,68 +24,62 @@ param.L = par.L;
 f = 0;
 
 %% Initialize Us, Up as I
+Us = eye(size(Dn, 2));
+Up = eye(size(Dn, 2));
 
-Us = Ws; 
-Up = Wp; 
+%% Iteratively solve A D U
 
-%% Iteratively solve D A U
-
-for t = 1 : nIter
-
+for t = 1 : par.nIter
+    
     %% Updating Alphas and Alphap
     f_prev = f;
-    Alphas = mexLasso([Xs;sqrtmu * Up * full(Alphap)], [Ds; sqrtmu * Us],param);
-    Alphap = mexLasso([Xp;sqrtmu * Us * full(Alphas)], [Dp; sqrtmu * Up],param);
+    An = mexLasso([Xn; par.sqrtmu * Up * full(Ac)], [Dn; par.sqrtmu * Us],param);
+    Ac = mexLasso([Xc; par.sqrtmu * Us * full(An)], [Dc; par.sqrtmu * Up],param);
     dictSize = par.K;
 
     %% Updating Ds and Dp 
     for i=1:dictSize
-       ai        =    Alphas(i,:);
-       Y         =    Xs-Ds*Alphas+Ds(:,i)*ai;
-       di        =    Y*ai';
-       di        =    di./(norm(di,2) + eps);
-       Ds(:,i)    =    di;
+       ai        =    An(i,:);
+       Y         =    Xn - Dn * An + Dn(:,i) * ai;
+       di        =    Y * ai';
+       di        =    di ./ (norm(di,2) + eps);
+       Dn(:,i)   =    di;
     end
 
     for i=1:dictSize
-       ai        =    Alphap(i,:);
-       Y         =    Xp-Dp*Alphap+Dp(:,i)*ai;
-       di        =    Y*ai';
-       di        =    di./(norm(di,2) + eps);
-       Dp(:,i)    =    di;
+       ai        =    Ac(i,:);
+       Y         =    Xc - Dc * Ac + Dc(:,i) * ai;
+       di        =    Y * ai';
+       di        =    di ./ (norm(di,2) + eps);
+       Dc(:,i)  =    di;
     end
-
     %% Updating Ws and Wp => Updating Us and Up
-    Us = (1 - rho) * Us  + rho * Up * Alphap * Alphas' / ( Alphas * Alphas' + par.nu * eye(size(Alphas, 1)));
-    Up = (1 - rho) * Up  + rho * Us * Alphas * Alphap' / ( Alphap * Alphap' + par.nu * eye(size(Alphap, 1)));
-    Ws = Up /Us;
-    Wp = Us /Up;
+    Us = (1 - par.rho) * Us  + par.rho * Up * Ac * An' / ( An * An' + par.nu * eye(size(An, 1)));
+    Up = (1 - par.rho) * Up  + par.rho * Us * An * Ac' / ( Ac * Ac' + par.nu * eye(size(Ac, 1)));
 
     %% Find if converge (NEED MODIFICATION)
-
-    P1 = Xp - Dp * Alphap;
+    P1 = Xc - Dc * Ac;
     P1 = P1(:)'*P1(:) / 2;
-    P2 = lambda1 *  norm(Alphap, 1);    
-    P3 = Us * Alphas - Up * Alphap; %  20160725: Alphas - Wp * Alphap -> Us * Alphas - Up * Alphap
+    P2 = par.lambda1 *  norm(Ac, 1);    
+    P3 = Us * An - Up * Ac; 
     P3 = P3(:)'*P3(:) / 2;
-    P4 = nu * norm(Up, 'fro');
-    fp = 1 / 2 * P1 + P2 + mu * (P3 + P4);
+    P4 = par.nu * norm(Up, 'fro');
+    fp = 1 / 2 * P1 + P2 + par.mu * (P3 + P4);
     
-    P1 = Xs - Ds * Alphas;
+    P1 = Xn - Dn * An;
     P1 = P1(:)'*P1(:) / 2;
-    P2 = lambda1 *  norm(Alphas, 1);    
-    P3 = Us * Alphas - Up * Alphap; %  20160725: Alphap - Ws * Alphas -> Us * Alphas - Up * Alphap
+    P2 = par.lambda1 *  norm(An, 1);    
+    P3 = Us * An - Up * Ac; 
     P3 = P3(:)'*P3(:) / 2;
-    P4 = nu * norm(Us, 'fro');  %%
-    fs = 1 / 2 * P1 + P2 + mu * (P3 + P4);
+    P4 = par.nu * norm(Us, 'fro');  
+    fs = 1 / 2 * P1 + P2 + par.mu * (P3 + P4);
     
     f = fp + fs;
 	
-        %% if converge then break
-    if (abs(f_prev - f) / f < epsilon)
+    %% if converge then break
+    if (abs(f_prev - f) / f < par.epsilon)
         break;
     end
-    fprintf('Energy: %d\n',f);
-    save tempDSCDL_BID_Dict Ds Dp Us Up Ws Wp par param;
+    fprintf('Energy %d: %d\n', t, f);
 end
     
