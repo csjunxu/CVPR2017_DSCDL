@@ -39,7 +39,7 @@ for i = 1 : par.cls_num
     Alphac = mexLasso([XN_t;XC_t], D, param);
     Alphan = Alphac;
     clear D;
-    [Alphac, Alphan, XC_t, XN_t, Dc, Dn, Uc, Un, f] = ADPU_Double_Semi_Coupled_ODL(Alphac, Alphan, XC_t, XN_t, Dc, Dn, par);
+    [Alphac, Alphan, XC_t, XN_t, Dc, Dn, Uc, Un, f] = Double_Semi_Coupled_ODL(Alphac, Alphan, XC_t, XN_t, Dc, Dn, par);
     DSCDL.DC{i} = Dc;
     DSCDL.DN{i} = Dn;
     DSCDL.UC{i} = Uc;
