@@ -41,7 +41,7 @@ for lambda = 0.01:0.002:0.02
                     [h,w,ch] = size(IMin);
                     par.IMindex = i;
                     %% ML_RID
-                    [IMout, par] = DSCDL_RGB_PG_ML_RID_20161207(IMin,IM_GT,model,DSCDL,par,param);
+                    [IMout, par] = DSCDL_RGB_PG_ML_RID(IMin,IM_GT,model,DSCDL,par,param);
                     %% output
                     % imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
                 end
