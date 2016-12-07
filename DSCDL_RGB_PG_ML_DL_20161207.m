@@ -2,9 +2,8 @@ clear;
 addpath('Data');
 addpath('Utilities');
 
-task = 'BID';
+task = 'RID';
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
-% load Data/rnd_RGB_PG_6x6_1922650_20161006T194212.mat;
 %% Parameters Setting
 % lambda is important;
 % lambda2 is not important
@@ -36,7 +35,7 @@ param.lambda = par.lambda1;
 param.lambda2 = par.lambda2;
 param.iter=300;
 param.L = par.ps^2;
-
+save Data/MultiLayer_Param_20161207_1.mat par param;
 
 %% begin dictionary learning
 par.PSNR = zeros(par.cls_num, par.Layer+1);
