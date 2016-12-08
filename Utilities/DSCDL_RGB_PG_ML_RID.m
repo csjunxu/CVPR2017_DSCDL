@@ -38,10 +38,10 @@ for t = 1 : par.nInnerLoop
         cls       =   cls_idx(idx(1));
         Xc    = nDCnlXC(:, idx);
         Xn    = nDCnlXN(:, idx);
-        Dc    = DSCDL.DC{cls};
-        Dn    = DSCDL.DN{cls};
-        Uc    = DSCDL.UC{cls};
-        Un    = DSCDL.UN{cls};
+        Dc    = DSCDL.DC{cls,t};
+        Dn    = DSCDL.DN{cls,t};
+        Uc    = DSCDL.UC{cls,t};
+        Un    = DSCDL.UN{cls,t};
         if (t == 1)
             Alphan = mexLasso(Xn, Dn, param);
             Alphac = Uc \ Un * Alphan;
