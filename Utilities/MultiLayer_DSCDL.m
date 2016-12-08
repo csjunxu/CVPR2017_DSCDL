@@ -12,7 +12,7 @@
 % Up    ,Us    : Output Projection Matrix for Alpha
 %
 
-function [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, Xc, Xn, Dc, Dn, par)
+function [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, Xc, Xn, Dc, Dn, par, param)
 
 f = 0;
 
