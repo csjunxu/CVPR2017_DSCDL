@@ -30,11 +30,12 @@ par.epsilon         =       5e-3;
 par.t0              =       5;
 par.K               =       256;
 par.L               =       par.ps^2;
+%% fixed parameter setting
+param.mode          = 	    2;       % penalized formulation
+param.approx=0;
 param.K = par.K;
-param.lambda = par.lambda1;
-param.lambda2 = par.lambda2;
+param.L = par.L;
 param.iter=300;
-param.L = par.ps^2;
 save Data/MultiLayer_Param_20161207_1.mat par param;
 
 %% begin dictionary learning
