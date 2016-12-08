@@ -63,7 +63,7 @@ for i = 1 : par.cls_num
         Ac = mexLasso([XN;XC], D, param);
         An = Ac;
         clear D;
-        [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par, param);
+        [Dc, Dn, Uc, Un, Ac, An, f] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par, param);
         %%
         XN = Dn*An;
         par.PSNR(i, L+1) = csnr( XN*255, XC*255, 0, 0 );
