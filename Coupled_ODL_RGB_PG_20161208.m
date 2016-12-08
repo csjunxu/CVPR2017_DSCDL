@@ -8,18 +8,12 @@ load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 % tunable parameters
 par.lambda1         =       0.01;
 par.lambda2         =       0.001;
-% par.mu              =       0.01;
-% par.sqrtmu          =       sqrt(par.mu);
 % fixed parameters 
 par.cls_num            =    cls_num;
-% par.step               =    3;
 par.ps                =   6;
-% par.rho = 5e-2;
 par.nIter           =       100;
 par.epsilon         =       1e-3;
-% par.t0              =       5;
-% par.K               =       256;
-% par.L               =       par.ps^2;
+%% Coupled ODL
 for i = 1 : par.cls_num
     XN = double(Xn{i});
     XC = double(Xc{i});
