@@ -35,12 +35,12 @@ for i = 1 : par.cls_num
         XC = XC(:,1:2e4);
     end
     fprintf('DSCDL_RGB_PG_ODL: Cluster: %d\n', i);
-    D = mexTrainDL([XN;XC], param);
-    Dn = D(1:size(XN,1),:);
-    Dc = D(size(XN,1)+1:end,:);
-    Ac = mexLasso([XN;XC], D, param);
-    An = Ac;
-    clear D;
+    %% Initialization of Dictionaries and Coefficients
+    [Dn,~,~] = svd(cov(XN'));
+    [Dc,~,~] = svd(cov(XC'));
+    An = Dn' * XN;
+    Ac = Dc' * XC;
+    %% Orthogonal Dictionary Learning
     [Ac, An, XC, XN, Dc, Dn, Pc, Pn, f] = Double_Semi_Coupled_ODL(Ac, An, XC, XN, Dc, Dn, par);
     DSCDL.DC{i} = Dc;
     DSCDL.DN{i} = Dn;
