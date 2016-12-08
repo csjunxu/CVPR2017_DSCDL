@@ -45,8 +45,8 @@ for t = 1 : par.nIter
     %% Updating Dn and Dc
     [Un,~,Vn] = svd(Xn*An','econ');
     Dn = Un*Vn';
-    [UC,~,VC] = svd(Xc*Ac','econ');
-    Dc = UC*VC';
+    [Uc,~,Vc] = svd(Xc*Ac','econ');
+    Dc = Uc*Vc';
 
     %% Updating Pn and Pc
     Pn = (1 - par.rho) * Pn  + par.rho * Pc * Ac * An' / ( An * An' + par.nu * eye(size(An, 1)));
