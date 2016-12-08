@@ -1,4 +1,4 @@
-function [IMout, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param)
+function [im_out, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param)
 %% modified on 20161208 
 
 %% Initialization
