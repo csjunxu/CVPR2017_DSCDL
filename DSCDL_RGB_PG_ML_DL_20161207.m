@@ -62,7 +62,7 @@ for i = 1 : par.cls_num
         %% tunable parameters
         param.lambda        = 	    par.lambda1(L);
         param.lambda2       =       par.lambda2;
-        [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par);
+        [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par, param);
         %%
         Xn = Dn*An;
         par.PSNR(i, L+1) = csnr( Xn*255, Xc*255, 0, 0 );
