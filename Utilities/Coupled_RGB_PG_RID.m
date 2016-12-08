@@ -6,8 +6,7 @@ im_out = IMin;
 for t = 1 : par.nInnerLoop
     if mod(t -1,2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
-        AN = zeros(par.K, size(nDCnlYH, 2));
-        AC = zeros(par.K, size(nDCnlYH, 2));
+        AA = zeros(par.K, size(nDCnlYH, 2));
         %% GMM: full posterior calculation
         nPG = size(nDCnlYH,2)/par.nlsp; % number of PGs
         PYZ = zeros(model.nmodels,nPG);
@@ -41,26 +40,21 @@ for t = 1 : par.nInnerLoop
         Dc    = CODL.DC{cls};
         Dn    = CODL.DN{cls};
         if (t == 1)
-            Alphan = mexLasso(Xn, Dn, param);
-            Alphac = Uc \ Un * Alphan;
-            Xc = Dc * Alphac;
+            A = mexLasso(Xn, Dn, param);
+            Xc = Dc * A;
         else
-            Alphac = AC(:, idx);
+            A = AA(:, idx);
         end
         %% Transformation
-        D = [Dn; par.sqrtmu * Un];
-        Y = [Xn; par.sqrtmu * Uc * full(Alphac)];
-        Alphan = mexLasso(Y, D,param);
-        clear Y D;
+        A = mexLasso(Xn, Dn,param);
         D = [Dc; par.sqrtmu * Uc];
         Y = [Xc; par.sqrtmu * Un * full(Alphan)];
-        Alphac = full(mexLasso(Y, D,param));
+        A = full(mexLasso(Y, D,param));
         clear Y D;
         %% Reconstruction
-        Xc = Dc * Alphac;
+        Xc = Dc * A;
         nDCnlXC(:, idx) = Xc;
-        AN(:, idx) = Alphan;
-        AC(:, idx) = Alphac;
+        AA(:, idx) = A;
         X_hat(:,blk_arrXC(idx)) = X_hat(:,blk_arrXC(idx)) + nDCnlXC(:, idx) + DCXC(:,idx);
         W(:,blk_arrXC(idx))     = bsxfun(@plus,W(:,blk_arrXC(idx)),ones(par.ps^2*par.ch,length(idx)));
     end
