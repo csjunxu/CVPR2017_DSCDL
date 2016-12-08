@@ -25,10 +25,8 @@ for lambda = 0.01:0.002:0.02
         param.lambda2 = lambda2;
         for sqrtmu = 0.01
             par.sqrtmu = sqrtmu;
-            for nInnerLoop = 2
+            for nInnerLoop = 4
                 par.nInnerLoop = nInnerLoop;
-                PSNR = [];
-                SSIM = [];
                 CCPSNR = [];
                 CCSSIM = [];
                 for i = 1:im_num
@@ -41,23 +39,8 @@ for lambda = 0.01:0.002:0.02
                     CCSSIM = [CCSSIM cal_ssim( IMin*255, IM_GT*255, 0, 0 )];
                     fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n',CCPSNR(end), CCSSIM(end));
                     [h,w,ch] = size(IMin);
-                    %%
-                    %                     nOuterLoop = 1;
-                    %                     Continue = true;
-                    %                     while Continue
-                    % fprintf('Iter: %d \n', nOuterLoop);
                     par.IMindex = i;
                     [IMout, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param);
-                    % Noise Level Estimation
-                    %                         nSig = NoiseEstimation(IMout*255,6);
-                    %                         fprintf('The noise level is %2.4f.\n',nSig);
-                    %                         if nSig < 0.0001 || nOuterLoop >= 5
-                    %                             Continue = false;
-                    %                         else
-                    %                             nOuterLoop = nOuterLoop + 1;
-                    %                             IMin = IMout;
-                    %                         end
-                    %                     end
                     %% output
                     % imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
                 end
