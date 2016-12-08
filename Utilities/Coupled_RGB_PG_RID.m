@@ -1,12 +1,11 @@
 function [im_out, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param)
-%% modified on 20161208 
+%% modified on 20161208
 
 %% Initialization
 im_out = IMin;
 for t = 1 : par.nInnerLoop
     if mod(t -1,2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
-        AA = zeros(par.K, size(nDCnlYH, 2));
         %% GMM: full posterior calculation
         nPG = size(nDCnlYH,2)/par.nlsp; % number of PGs
         PYZ = zeros(model.nmodels,nPG);
@@ -35,26 +34,13 @@ for t = 1 : par.nInnerLoop
     for   i  = 1:length(seg)-1
         idx          =   s_idx(seg(i)+1:seg(i+1));
         cls       =   cls_idx(idx(1));
-        Xc    = nDCnlXC(:, idx);
         Xn    = nDCnlXN(:, idx);
         Dc    = CODL.DC{cls};
         Dn    = CODL.DN{cls};
-        if (t == 1)
-            A = mexLasso(Xn, Dn, param);
-            Xc = Dc * A;
-        else
-            A = AA(:, idx);
-        end
-        %% Transformation
-        A = mexLasso(Xn, Dn,param);
-        D = [Dc; par.sqrtmu * Uc];
-        Y = [Xc; par.sqrtmu * Un * full(Alphan)];
-        A = full(mexLasso(Y, D,param));
-        clear Y D;
+        A = mexLasso(Xn, Dn, param);
         %% Reconstruction
         Xc = Dc * A;
         nDCnlXC(:, idx) = Xc;
-        AA(:, idx) = A;
         X_hat(:,blk_arrXC(idx)) = X_hat(:,blk_arrXC(idx)) + nDCnlXC(:, idx) + DCXC(:,idx);
         W(:,blk_arrXC(idx))     = bsxfun(@plus,W(:,blk_arrXC(idx)),ones(par.ps^2*par.ch,length(idx)));
     end
