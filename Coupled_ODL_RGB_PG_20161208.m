@@ -12,7 +12,7 @@ par.lambda2         =       0.001;
 par.cls_num            =    cls_num;
 par.ps                =   6;
 par.nIter           =       100;
-par.epsilon         =       1e-4;
+par.epsilon         =       1e-3;
 %% Coupled ODL
 for i = 1 : par.cls_num
     XN = double(Xn{i});
