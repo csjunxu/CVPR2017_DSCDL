@@ -15,7 +15,7 @@ im_num = length(TT_im_dir);
 
 %% load parameters and dictionary
 load Data/params.mat par param;
-load Data/DSCDL_RGB_PG_ML_DL_10_6x6_31_BID_20161006.mat DSCDL;
+load Data/Coupled_ODL_RGB_PG_10_6x6_33_BID_20161208.mat CODL;
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
 
@@ -47,8 +47,7 @@ for lambda = 0.01:0.002:0.02
                     %                     while Continue
                     % fprintf('Iter: %d \n', nOuterLoop);
                     par.IMindex = i;
-                    %% ML_RID
-                    [IMout, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,DSCDL,par,param);
+                    [IMout, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param);
                     % Noise Level Estimation
                     %                         nSig = NoiseEstimation(IMout*255,6);
                     %                         fprintf('The noise level is %2.4f.\n',nSig);
