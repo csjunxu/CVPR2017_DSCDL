@@ -38,7 +38,7 @@ for lambda = 0.01:0.005:0.1
                 fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n',CCPSNR(end), CCSSIM(end));
                 [h,w,ch] = size(IMin);
                 par.IMindex = i;
-                [IMout, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param);
+                [IMout, par] = Coupled_ODL_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param);
                 %% output
                 % imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
             end
