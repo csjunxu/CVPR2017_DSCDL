@@ -1,7 +1,6 @@
 clear;
 addpath('Data');
 addpath('Utilities');
-addpath('SPAMS');
 
 task = 'BID';
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
@@ -12,7 +11,7 @@ par.lambda2         =       0.001;
 par.mu              =       0.01;
 par.sqrtmu          =       sqrt(par.mu);
 par.nu              =       0.1;
-% fixed parameters
+% fixed parameters 
 par.cls_num            =    cls_num;
 par.step               =    3;
 par.ps                =   6;
