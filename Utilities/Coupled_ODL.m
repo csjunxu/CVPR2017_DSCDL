@@ -14,11 +14,9 @@ function [A, Dc, Dn,f] = Coupled_ODL(Xc, Xn, Dc, Dn, A, par)
 %% parameter setting
 param.lambda        = 	    par.lambda1; % not more than 20 non-zeros coefficients
 param.lambda2       =       par.lambda2;
-param.mode          = 	    2;       % penalized formulation
-param.approx=0;
-param.K = par.K;
-param.L = par.L;
-param.iter=300;
+% param.approx=0;
+% param.K = par.K;
+% param.iter=300;
 
 f = 0;
 
