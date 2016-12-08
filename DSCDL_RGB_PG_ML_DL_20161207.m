@@ -48,8 +48,8 @@ for i = 1 : par.cls_num
         XN = XN(:,1:2e4);
         XC = XC(:,1:2e4);
     end
-    PSNR(i ,1) = csnr( Xn*255, Xc*255, 0, 0 );
-    SSIM(i ,1) = cal_ssim( Xn*255, Xc*255, 0, 0 );
+    PSNR(i ,1) = csnr( XN*255, XC*255, 0, 0 );
+    SSIM(i ,1) = cal_ssim( XN*255, XC*255, 0, 0 );
     fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(i ,1), SSIM(i ,1) );
     fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', i);
     D = mexTrainDL([XN;XC], param);
