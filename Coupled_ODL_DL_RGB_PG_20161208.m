@@ -27,7 +27,7 @@ for i = 1 : par.cls_num
     [Dc,~,~] = svd(cov(XC'));
     A = [Dn;Dc]' * [XN;XC];
     %% Orthogonal Dictionary Learning
-    [A, Dc, Dn, f] = Coupled_ODL(XC, XN, Dc, Dn, A, par);
+    [A, Dc, Dn, f] = Coupled_ODL_RGB_PG_DL(XC, XN, Dc, Dn, A, par);
     CODL.DC{i} = Dc;
     CODL.DN{i} = Dn;
     CODL.f{i} = f;
