@@ -41,17 +41,17 @@ save Data/MultiLayer_Param_20161207_1.mat par param;
 %% begin dictionary learning
 PSNR = zeros(par.cls_num, par.Layer+1);
 SSIM = zeros(par.cls_num, par.Layer+1);
-for i = 1 : par.cls_num
-    fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', i);
-    XN = double(Xn{i});
-    XC = double(Xc{i});
+for cls = 1 : par.cls_num
+    fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', cls);
+    XN = double(Xn{cls});
+    XC = double(Xc{cls});
     if size(XN, 2)>2e4
         XN = XN(:,1:2e4);
         XC = XC(:,1:2e4);
     end
-    PSNR(i ,1) = csnr( XN*255, XC*255, 0, 0 );
-    SSIM(i ,1) = cal_ssim( XN*255, XC*255, 0, 0 );
-    fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(i ,1), SSIM(i ,1) );
+    PSNR(cls ,1) = csnr( XN*255, XC*255, 0, 0 );
+    SSIM(cls ,1) = cal_ssim( XN*255, XC*255, 0, 0 );
+    fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(cls ,1), SSIM(cls ,1) );
     %% Multi Layer Semi-Coupled Dictioanry Learning
     for L = 1: par.Layer
         %% tunable parameters
@@ -66,15 +66,15 @@ for i = 1 : par.cls_num
         [Dc, Dn, Uc, Un, Ac, An, f] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par, param);
         %%
         XN = Dn*An;
-        par.PSNR(i, L+1) = csnr( XN*255, XC*255, 0, 0 );
-        par.SSIM(i, L+1) = cal_ssim( XN*255, XC*255, 0, 0 );
-        fprintf('The %d-th final PSNR = %2.4f, SSIM = %2.4f. \n', L, par.PSNR(i ,L+1), par.SSIM(i ,L+1) );
+        par.PSNR(cls, L+1) = csnr( XN*255, XC*255, 0, 0 );
+        par.SSIM(cls, L+1) = cal_ssim( XN*255, XC*255, 0, 0 );
+        fprintf('The %d-th final PSNR = %2.4f, SSIM = %2.4f. \n', L, par.PSNR(cls ,L+1), par.SSIM(cls ,L+1) );
         %% save results
-        DSCDL.DC{i,L} = Dc;
-        DSCDL.DN{i,L} = Dn;
-        DSCDL.UC{i,L} = Uc;
-        DSCDL.UN{i,L} = Un;
-        DSCDL.f{i,L} = f;
+        DSCDL.DC{cls,L} = Dc;
+        DSCDL.DN{cls,L} = Dn;
+        DSCDL.UC{cls,L} = Uc;
+        DSCDL.UN{cls,L} = Un;
+        DSCDL.f{cls,L} = f;
         Dict_BID = sprintf('Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_%2.4f_%2.4f.mat',par.lambda1(1),par.lambda1(2));
         save(Dict_BID,'DSCDL','par');
     end
