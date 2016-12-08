@@ -38,8 +38,8 @@ param.L = par.ps^2;
 save Data/MultiLayer_Param_20161207_1.mat par param;
 
 %% begin dictionary learning
-par.PSNR = zeros(par.cls_num, par.Layer+1);
-par.SSIM = zeros(par.cls_num, par.Layer+1);
+PSNR = zeros(par.cls_num, par.Layer+1);
+SSIM = zeros(par.cls_num, par.Layer+1);
 for i = 1 : par.cls_num
     XN = double(Xn{i});
     XC = double(Xc{i});
@@ -47,7 +47,9 @@ for i = 1 : par.cls_num
         XN = XN(:,1:2e4);
         XC = XC(:,1:2e4);
     end
-    par.i = i;
+    PSNR(i ,1) = csnr( Xn*255, Xc*255, 0, 0 );
+    SSIM(i ,1) = cal_ssim( Xn*255, Xc*255, 0, 0 );
+    fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(i ,1), SSIM(i ,1) );
     fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', i);
     D = mexTrainDL([XN;XC], param);
     Dn = D(1:size(XN,1),:);
@@ -55,7 +57,23 @@ for i = 1 : par.cls_num
     Ac = mexLasso([XN;XC], D, param);
     An = Ac;
     clear D;
-    [DSCDL, par] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par);
-    Dict_BID = sprintf('Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_%2.4f_%2.4f.mat',par.lambda1(1),par.lambda1(2));
-    save(Dict_BID,'DSCDL','par');
+    for L = 1: par.Layer
+        %% tunable parameters
+        param.lambda        = 	    par.lambda1(L);
+        param.lambda2       =       par.lambda2;
+        [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par);
+        %%
+        Xn = Dn*An;
+        par.PSNR(i, L+1) = csnr( Xn*255, Xc*255, 0, 0 );
+        par.SSIM(i, L+1) = cal_ssim( Xn*255, Xc*255, 0, 0 );
+        fprintf('The %d-th final PSNR = %2.4f, SSIM = %2.4f. \n', L, par.PSNR(i ,L+1), par.SSIM(i ,L+1) );
+        %% save results
+        DSCDL.DC{i,L} = Dc;
+        DSCDL.DN{i,L} = Dn;
+        DSCDL.UC{i,L} = Uc;
+        DSCDL.UN{i,L} = Un;
+        DSCDL.f{i,L} = f;
+        Dict_BID = sprintf('Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_%2.4f_%2.4f.mat',par.lambda1(1),par.lambda1(2));
+        save(Dict_BID,'DSCDL','par');
+    end
 end
