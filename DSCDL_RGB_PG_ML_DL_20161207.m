@@ -53,16 +53,17 @@ for cls = 1 : par.cls_num
     SSIM(cls ,1) = cal_ssim( XN*255, XC*255, 0, 0 );
     fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(cls ,1), SSIM(cls ,1) );
     %% Multi Layer Semi-Coupled Dictioanry Learning
+    param.lambda        = 	    par.lambda1(1);
+    param.lambda2       =       par.lambda2;
+    D = mexTrainDL([XN;XC], param);
+    Dn = D(1:size(XN,1),:);
+    Dc = D(size(XN,1)+1:end,:);
+    Ac = mexLasso([XN;XC], D, param);
+    An = Ac;
+    clear D;
     for L = 1: par.Layer
         %% tunable parameters
         param.lambda        = 	    par.lambda1(L);
-        param.lambda2       =       par.lambda2;
-        D = mexTrainDL([XN;XC], param);
-        Dn = D(1:size(XN,1),:);
-        Dc = D(size(XN,1)+1:end,:);
-        Ac = mexLasso([XN;XC], D, param);
-        An = Ac;
-        clear D;
         [Dc, Dn, Uc, Un, Ac, An, f] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par, param);
         %%
         XN = Dn*An;
