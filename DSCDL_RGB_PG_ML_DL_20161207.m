@@ -42,6 +42,7 @@ save Data/MultiLayer_Param_20161207_1.mat par param;
 PSNR = zeros(par.cls_num, par.Layer+1);
 SSIM = zeros(par.cls_num, par.Layer+1);
 for i = 1 : par.cls_num
+    fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', i);
     XN = double(Xn{i});
     XC = double(Xc{i});
     if size(XN, 2)>2e4
@@ -51,17 +52,17 @@ for i = 1 : par.cls_num
     PSNR(i ,1) = csnr( XN*255, XC*255, 0, 0 );
     SSIM(i ,1) = cal_ssim( XN*255, XC*255, 0, 0 );
     fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(i ,1), SSIM(i ,1) );
-    fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', i);
-    D = mexTrainDL([XN;XC], param);
-    Dn = D(1:size(XN,1),:);
-    Dc = D(size(XN,1)+1:end,:);
-    Ac = mexLasso([XN;XC], D, param);
-    An = Ac;
-    clear D;
+    
     for L = 1: par.Layer
         %% tunable parameters
         param.lambda        = 	    par.lambda1(L);
         param.lambda2       =       par.lambda2;
+        D = mexTrainDL([XN;XC], param);
+        Dn = D(1:size(XN,1),:);
+        Dc = D(size(XN,1)+1:end,:);
+        Ac = mexLasso([XN;XC], D, param);
+        An = Ac;
+        clear D;
         [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par, param);
         %%
         Xn = Dn*An;
