@@ -52,7 +52,7 @@ for t = 1 : par.nIter
     %% Find if converge (NEED MODIFICATION)
     P1 = Xc - Dc * Ac;
     P1 = P1(:)'*P1(:) / 2;
-    P2 = par.lambda1 *  norm(Ac, 1);
+    P2 = param.lambda *  norm(Ac, 1);
     P3 = Un * An - Uc * Ac;
     P3 = P3(:)'*P3(:) / 2;
     P4 = par.nu * norm(Uc, 'fro');
@@ -60,7 +60,7 @@ for t = 1 : par.nIter
     
     P1 = Xn - Dn * An;
     P1 = P1(:)'*P1(:) / 2;
-    P2 = par.lambda1 *  norm(An, 1);
+    P2 = param.lambda *  norm(An, 1);
     P3 = Un * An - Uc * Ac;
     P3 = P3(:)'*P3(:) / 2;
     P4 = par.nu * norm(Un, 'fro');
