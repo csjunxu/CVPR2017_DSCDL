@@ -37,8 +37,9 @@ for t = 1 : par.nInnerLoop
         Xn    = nDCnlXN(:, idx);
         Dc    = CODL.DC{cls};
         Dn    = CODL.DN{cls};
-        %  A = mexLasso(Xn, Dn, param);
-        A = mexLasso([Xn;Xc], [Dn;Dc], param);
+        A = mexLasso(Xn, Dn, param);
+        %         Xc = nDCnlXC(:, idx);
+        %         A = mexLasso([Xn;Xc], [Dn;Dc], param);
         %% Reconstruction
         Xc = Dc * A;
         nDCnlXC(:, idx) = Xc;
