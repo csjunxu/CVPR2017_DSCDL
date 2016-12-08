@@ -15,7 +15,7 @@ im_num = length(TT_im_dir);
 
 %% load parameters and dictionary
 load Data/params.mat par param;
-load Data/DSCDL_RGB_PG_ML_DL_10_6x6_31_BID_20161006.mat DSCDL;
+load Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_0.0100_0.1000.mat DSCDL;
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
 
@@ -49,7 +49,7 @@ for lambda = 0.01:0.002:0.02
                 SSIM = par.SSIM;
                 mPSNR = mean(PSNR);
                 mSSIM = mean(SSIM);
-                savename = ['Real_DSCDL_ML_RID_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.mat'];
+                savename = ['RID_DSCDL_ML_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.mat'];
                 save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
             end
         end
