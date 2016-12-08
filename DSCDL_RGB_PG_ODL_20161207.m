@@ -38,10 +38,10 @@ for i = 1 : par.cls_num
     D = mexTrainDL([XN;XC], param);
     Dn = D(1:size(XN,1),:);
     Dc = D(size(XN,1)+1:end,:);
-    Alphac = mexLasso([XN;XC], D, param);
-    Alphan = Alphac;
+    Ac = mexLasso([XN;XC], D, param);
+    An = Ac;
     clear D;
-    [Alphac, Alphan, XC, XN, Dc, Dn, Pc, Pn, f] = Double_Semi_Coupled_ODL(Alphac, Alphan, XC, XN, Dc, Dn, par);
+    [Ac, An, XC, XN, Dc, Dn, Pc, Pn, f] = Double_Semi_Coupled_ODL(Ac, An, XC, XN, Dc, Dn, par);
     DSCDL.DC{i} = Dc;
     DSCDL.DN{i} = Dn;
     DSCDL.PC{i} = Pc;
