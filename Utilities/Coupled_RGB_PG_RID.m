@@ -1,5 +1,5 @@
-function im_out = Coupled_RGB_PG_RID(IMin,IM_GT,model,DSCDL,par,param)
-%% modified on 20161207 
+function [IMout, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param)
+%% modified on 20161208 
 
 %% Initialization
 im_out = IMin;
@@ -38,10 +38,8 @@ for t = 1 : par.nInnerLoop
         cls       =   cls_idx(idx(1));
         Xc    = nDCnlXC(:, idx);
         Xn    = nDCnlXN(:, idx);
-        Dc    = DSCDL.DC{cls};
-        Dn    = DSCDL.DN{cls};
-        Uc    = DSCDL.UC{cls};
-        Un    = DSCDL.UN{cls};
+        Dc    = CODL.DC{cls};
+        Dn    = CODL.DN{cls};
         if (t == 1)
             Alphan = mexLasso(Xn, Dn, param);
             Alphac = Uc \ Un * Alphan;
