@@ -45,7 +45,7 @@ for t = 1 : par.nIter
     %% Updating Dn and Dc
     [Un,~,Vn] = svd(Xn*An','econ');
     Dn = Un*Vn';
-    [UC,~,VC] = svd(Xc*AC','econ');
+    [UC,~,VC] = svd(Xc*Ac','econ');
     Dc = UC*VC';
 
     %% Updating Pn and Pc
