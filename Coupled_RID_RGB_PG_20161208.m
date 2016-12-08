@@ -23,33 +23,33 @@ for lambda = 0.01:0.005:0.1
     param.lambda = lambda;
     for lambda2 = [0.001]
         param.lambda2 = lambda2;
-%         for sqrtmu = 0.01
-%             par.sqrtmu = sqrtmu;
-            for nInnerLoop = 4
-                par.nInnerLoop = nInnerLoop;
-                CCPSNR = [];
-                CCSSIM = [];
-                for i = 1:im_num
-                    IM_GT = im2double(imread(fullfile(GT_Original_image_dir, GT_im_dir(i).name)));
-                    IMin = im2double(imread(fullfile(TT_Original_image_dir, TT_im_dir(i).name)));
-                    S = regexp(TT_im_dir(i).name, '\.', 'split');
-                    IMname = S{1};
-                    fprintf('%s : \n',IMname);
-                    CCPSNR = [CCPSNR csnr( IMin*255,IM_GT*255, 0, 0 )];
-                    CCSSIM = [CCSSIM cal_ssim( IMin*255, IM_GT*255, 0, 0 )];
-                    fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n',CCPSNR(end), CCSSIM(end));
-                    [h,w,ch] = size(IMin);
-                    par.IMindex = i;
-                    [IMout, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param);
-                    %% output
-                    % imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
-                end
-                PSNR = par.PSNR;
-                SSIM = par.SSIM;
-                mPSNR = mean(PSNR);
-                mSSIM = mean(SSIM);
-                savename = ['Real_DSCDL_RID_' num2str(lambda) '_' num2str(lambda2) '.mat'];
-                save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
+        %         for sqrtmu = 0.01
+        %             par.sqrtmu = sqrtmu;
+        for nInnerLoop = 4
+            par.nInnerLoop = nInnerLoop;
+            CCPSNR = [];
+            CCSSIM = [];
+            for i = 1:im_num
+                IM_GT = im2double(imread(fullfile(GT_Original_image_dir, GT_im_dir(i).name)));
+                IMin = im2double(imread(fullfile(TT_Original_image_dir, TT_im_dir(i).name)));
+                S = regexp(TT_im_dir(i).name, '\.', 'split');
+                IMname = S{1};
+                fprintf('%s : \n',IMname);
+                CCPSNR = [CCPSNR csnr( IMin*255,IM_GT*255, 0, 0 )];
+                CCSSIM = [CCSSIM cal_ssim( IMin*255, IM_GT*255, 0, 0 )];
+                fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n',CCPSNR(end), CCSSIM(end));
+                [h,w,ch] = size(IMin);
+                par.IMindex = i;
+                [IMout, par] = Coupled_RGB_PG_RID(IMin,IM_GT,model,CODL,par,param);
+                %% output
+                % imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
             end
+            PSNR = par.PSNR;
+            SSIM = par.SSIM;
+            mPSNR = mean(PSNR);
+            mSSIM = mean(SSIM);
+            savename = ['Real_DSCDL_RID_' num2str(lambda) '_' num2str(lambda2) '.mat'];
+            save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
         end
+    end
 end
