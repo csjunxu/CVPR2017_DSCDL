@@ -9,7 +9,7 @@
 % A: Output coupled sparse coefficient
 % Dc, Dn : Output Coupled Dictionaries
 
-function [A, Dc, Dn,f] = Coupled_ODL(Xc, Xn, Dc, Dn, A, par)
+function [A, Dc, Dn,f] = Coupled_ODL_RGB_PG_DL(Xc, Xn, Dc, Dn, A, par)
 
 %% parameter setting
 param.lambda        = 	    par.lambda1; % not more than 20 non-zeros coefficients
