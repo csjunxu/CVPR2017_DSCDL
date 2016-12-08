@@ -65,9 +65,9 @@ for i = 1 : par.cls_num
         clear D;
         [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, XC, XN, Dc, Dn, par, param);
         %%
-        Xn = Dn*An;
-        par.PSNR(i, L+1) = csnr( Xn*255, Xc*255, 0, 0 );
-        par.SSIM(i, L+1) = cal_ssim( Xn*255, Xc*255, 0, 0 );
+        XN = Dn*An;
+        par.PSNR(i, L+1) = csnr( XN*255, XC*255, 0, 0 );
+        par.SSIM(i, L+1) = cal_ssim( XN*255, XC*255, 0, 0 );
         fprintf('The %d-th final PSNR = %2.4f, SSIM = %2.4f. \n', L, par.PSNR(i ,L+1), par.SSIM(i ,L+1) );
         %% save results
         DSCDL.DC{i,L} = Dc;
