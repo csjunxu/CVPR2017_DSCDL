@@ -34,7 +34,7 @@ for i = 1 : par.cls_num
         XN = XN(:,1:2e4);
         XC = XC(:,1:2e4);
     end
-    fprintf('DSCDL_RGB_PGs: Cluster: %d\n', i);
+    fprintf('DSCDL_RGB_PG_ODL: Cluster: %d\n', i);
     D = mexTrainDL([XN;XC], param);
     Dn = D(1:size(XN,1),:);
     Dc = D(size(XN,1)+1:end,:);
