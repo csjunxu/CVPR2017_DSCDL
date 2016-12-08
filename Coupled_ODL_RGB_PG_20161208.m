@@ -28,11 +28,9 @@ for i = 1 : par.cls_num
     A = [Dn;Dc]' * [XN;XC];
     %% Orthogonal Dictionary Learning
     [A, Dc, Dn, f] = Coupled_ODL(XC, XN, Dc, Dn, A, par);
-    DSCDL.DC{i} = Dc;
-    DSCDL.DN{i} = Dn;
-    DSCDL.PC{i} = Pc;
-    DSCDL.PN{i} = Pn;
-    DSCDL.f{i} = f;
-    Dict_BID = sprintf('Data/Coupled_ODL_Dict_RGB_PG_10_6x6_33_%s_20161208.mat',task);
-    save(Dict_BID,'DSCDL');
+    CODL.DC{i} = Dc;
+    CODL.DN{i} = Dn;
+    CODL.f{i} = f;
+    Dict_BID = sprintf('Data/Coupled_ODL_RGB_PG_10_6x6_33_%s_20161208.mat',task);
+    save(Dict_BID,'CODL');
 end
