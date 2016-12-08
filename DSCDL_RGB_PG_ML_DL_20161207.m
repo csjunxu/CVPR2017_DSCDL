@@ -52,7 +52,7 @@ for i = 1 : par.cls_num
     PSNR(i ,1) = csnr( XN*255, XC*255, 0, 0 );
     SSIM(i ,1) = cal_ssim( XN*255, XC*255, 0, 0 );
     fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(i ,1), SSIM(i ,1) );
-    
+    %% Multi Layer Semi-Coupled Dictioanry Learning
     for L = 1: par.Layer
         %% tunable parameters
         param.lambda        = 	    par.lambda1(L);
