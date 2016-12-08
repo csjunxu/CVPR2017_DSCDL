@@ -29,7 +29,11 @@ f = 0;
 Pn = eye(size(Dn, 2));
 Pc = eye(size(Dn, 2));
 
-%% Iteratively solve A D U
+%% Iteratively solving: 
+% coefficients: A 
+% dictionary: D 
+% Linear Mapping: U
+%
 
 for t = 1 : par.nIter
     
