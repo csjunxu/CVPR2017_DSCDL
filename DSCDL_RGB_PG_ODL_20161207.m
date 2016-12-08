@@ -41,7 +41,7 @@ for i = 1 : par.cls_num
     An = Dn' * XN;
     Ac = Dc' * XC;
     %% Orthogonal Dictionary Learning
-    [Ac, An, XC, XN, Dc, Dn, Pc, Pn, f] = Double_Semi_Coupled_ODL(Ac, An, XC, XN, Dc, Dn, par);
+    [Ac, An, Dc, Dn, Pc, Pn, f] = Double_Semi_Coupled_ODL(XC, XN, Dc, Dn, Ac, An, par, param);
     DSCDL.DC{i} = Dc;
     DSCDL.DN{i} = Dn;
     DSCDL.PC{i} = Pc;
