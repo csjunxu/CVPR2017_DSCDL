@@ -14,11 +14,6 @@
 
 function [Dc, Dn, Uc, Un, Ac, An] = MultiLayer_DSCDL(Ac, An, Xc, Xn, Dc, Dn, par)
 
-%% fixed parameter setting
-param.mode          = 	    2;       % penalized formulation
-param.approx=0;
-param.K = par.K;
-param.L = par.L;
 f = 0;
 
 %% Initialize Us, Up as I
