@@ -19,12 +19,12 @@ load Data/Coupled_ODL_RGB_PG_10_6x6_33_BID_20161208.mat CODL;
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
 
-for lambda = 0.01:0.002:0.02
+for lambda = 0.01:0.005:0.1
     param.lambda = lambda;
     for lambda2 = [0.001]
         param.lambda2 = lambda2;
-        for sqrtmu = 0.01
-            par.sqrtmu = sqrtmu;
+%         for sqrtmu = 0.01
+%             par.sqrtmu = sqrtmu;
             for nInnerLoop = 4
                 par.nInnerLoop = nInnerLoop;
                 CCPSNR = [];
@@ -48,9 +48,8 @@ for lambda = 0.01:0.002:0.02
                 SSIM = par.SSIM;
                 mPSNR = mean(PSNR);
                 mSSIM = mean(SSIM);
-                savename = ['Real_DSCDL_RID_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.mat'];
+                savename = ['Real_DSCDL_RID_' num2str(lambda) '_' num2str(lambda2) '.mat'];
                 save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
             end
         end
-    end
 end
