@@ -12,7 +12,7 @@
 % Up    ,Us    : Output Projection Matrix for Alpha
 %
 
-function [Ac, An, Dc, Dn, Pc, Pn, f] = Double_Semi_Coupled_ODL(Xc, Xn, Dc, Dn, Ac, An, par, param)
+function [Ac, An, Dc, Dn, Pc, Pn, f] = Double_Semi_Coupled_ODL(Xc, Xn, Dc, Dn, Ac, An, par)
 
 %% parameter setting
 param.lambda        = 	    par.lambda1; % not more than 20 non-zeros coefficients
@@ -21,6 +21,8 @@ param.mode          = 	    2;       % penalized formulation
 param.approx=0;
 param.K = par.K;
 param.L = par.L;
+param.iter=300;
+
 f = 0;
 
 %% Initialize Us, Up as I
