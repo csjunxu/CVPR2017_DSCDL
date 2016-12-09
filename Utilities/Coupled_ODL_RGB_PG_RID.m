@@ -38,12 +38,12 @@ for t = 1 : par.nInnerLoop
         Dc    = CODL.DC{cls};
         Dn    = CODL.DN{cls};
         %% use noisy data to obtain the coefficients
-        %    then reconstruct clean data 
-        A = mexLasso(Xn, Dn, param);
+        %    then reconstruct clean data
+        %         A = mexLasso(Xn, Dn, param);
         %% use noisy and latent clean data for the coefficients
-        %    then reconstruct clean data 
-        %         Xc = nDCnlXC(:, idx);
-        %         A = mexLasso([Xn;Xc], [Dn;Dc], param);
+        %    then reconstruct clean data
+        Xc = nDCnlXC(:, idx);
+        A = mexLasso([Xn;Xc], [Dn;Dc], param);
         %% Reconstruction
         Xc = Dc * A;
         nDCnlXC(:, idx) = Xc;
