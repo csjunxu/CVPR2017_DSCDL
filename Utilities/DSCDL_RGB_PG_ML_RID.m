@@ -1,9 +1,10 @@
 function [im_out, par] = DSCDL_RGB_PG_ML_RID(IMin,IM_GT,model,DSCDL,par,param)
 %% Modified on 20161207 for multilayer real image denoising
-
+param.lambda2 = par.lambda2;
 %% Initialization
 im_out = IMin;
 for t = 1 : par.nInnerLoop
+    param.lambda = par.lambda(t);
     if mod(t - 1, 2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
         AN = zeros(par.K, size(nDCnlYH, 2));
