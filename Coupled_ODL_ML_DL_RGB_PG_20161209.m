@@ -6,7 +6,7 @@ task = 'BID';
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 %% Parameters Setting
 % tunable parameters
-lambda1         =       [0.01 0.02 0.005 0.1];
+lambda1         =       [0.01 0.02 0.005 0.01];
 par.lambda2         =       0.001;
 % fixed parameters
 par.cls_num            =    cls_num;
