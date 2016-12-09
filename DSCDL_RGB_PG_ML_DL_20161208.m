@@ -39,10 +39,9 @@ param.iter=300;
 save Data/MultiLayer_Param_20161207_1.mat par param;
 
 %% begin dictionary learning
-% PSNR = zeros(par.cls_num, par.Layer+1);
-% SSIM = zeros(par.cls_num, par.Layer+1);
-load DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_0.0100_0.1000.mat;
-for cls = 31 : par.cls_num
+PSNR = zeros(par.cls_num, par.Layer+1);
+SSIM  = zeros(par.cls_num, par.Layer+1);
+for cls = 1 : par.cls_num
     fprintf('DSCDL_RGB_PG_ML_DL, Cluster: %d\n', cls);
     XN = double(Xn{cls});
     XC = double(Xc{cls});
