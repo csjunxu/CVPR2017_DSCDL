@@ -4,7 +4,7 @@ function [im_out, par] = DSCDL_RGB_PG_ML_RID(IMin,IM_GT,model,DSCDL,par,param)
 %% Initialization
 im_out = IMin;
 for t = 1 : par.nInnerLoop
-    if mod(t -1,2) == 0
+    if mod(t - 1, 2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
         AN = zeros(par.K, size(nDCnlYH, 2));
         AC = zeros(par.K, size(nDCnlYH, 2));
