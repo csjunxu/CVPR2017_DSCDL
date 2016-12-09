@@ -38,7 +38,6 @@ for cls = 1 : par.cls_num
         par.lambda1 = lambda1(L);
         %% Orthogonal Dictionary Learning
         [A, Dc, Dn, f] = Coupled_ODL_RGB_PG_DL(XC, XN, Dc, Dn, A, par);
-        %%
         XN = Dn*A;
         par.PSNR(cls, L+1) = csnr( XN*255, XC*255, 0, 0 );
         par.SSIM(cls, L+1) = cal_ssim( XN*255, XC*255, 0, 0 );
