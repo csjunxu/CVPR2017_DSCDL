@@ -10,9 +10,9 @@ load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 % sqrtmu  is not important
 
 % the number of layers in DL
-par.Layer = 2;
+par.Layer = 4;
 % tunable parameters
-par.lambda1         =       [0.01 0.1];
+par.lambda1         =       [0.01 0.05 0.1 0.2];
 par.lambda2         =       0.001;
 
 % temporally fixed parameters
