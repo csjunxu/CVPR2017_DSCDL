@@ -19,8 +19,8 @@ load Data/DSCDL_RID_RGB_PG_ML_DL_10_6x6_33_0.0100_0.1000.mat DSCDL;
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
 par.nInnerLoop = 2;
-for lambda1 = [1e-2 5e-2 1e-1]
-    for lambda2 = [1e-2 5e-2 1e-1]
+for lambda1 = [1e-3 5e-3 1e-2]
+    for lambda2 = [1e-3 5e-3 1e-2]
         par.lambda = [lambda1, lambda2];
         for sqrtmu = 1e-2
             par.sqrtmu = sqrtmu;
