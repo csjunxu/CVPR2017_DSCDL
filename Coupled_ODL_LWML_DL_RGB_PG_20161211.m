@@ -52,4 +52,9 @@ for lambda1 = [0.001 0.005 0.01 0.05 0.1 0.5];
             save(Dict_BID,'CODL', 'PSNR', 'SSIM','Xn');
         end
     end
+    mPSNR = mean(PSNR);
+    mSSIM = mean(SSIM);
+    fprintf('The %d-th final PSNR = %2.4f, SSIM = %2.4f. \n', L, PSNR(cls ,L+1), SSIM(cls ,L+1) );
+    Dict_BID = sprintf('Data/Coupled_ODL_RGB_PG_10_6x6_33_%s_%2.4f.mat',task,lambda1);
+    save(Dict_BID,'CODL', 'PSNR', 'SSIM','mPSNR','mSSIM','Xn');
 end
