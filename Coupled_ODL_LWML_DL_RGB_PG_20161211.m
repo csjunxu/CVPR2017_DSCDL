@@ -18,7 +18,7 @@ for lambda1 = [0.001 0.005 0.01 0.05 0.1 0.5];
     %% Coupled ODL
     PSNR = zeros(par.cls_num, par.Layer+1);
     SSIM  = zeros(par.cls_num, par.Layer+1);
-    Xn_LW = Cell(par.cls_num, 4);
+    Xn_LW = cell(par.cls_num, 4);
     for cls = 1 : par.cls_num
         fprintf('Coupled_ODL_RGB_PG, Cluster: %d\n', cls);
         XN = double(Xn{cls});
