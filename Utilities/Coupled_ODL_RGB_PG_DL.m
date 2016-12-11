@@ -13,7 +13,7 @@ function [A, Dc, Dn,f] = Coupled_ODL_RGB_PG_DL(Xc, Xn, Dc, Dn, A, par)
 
 %% parameter setting
 param.lambda        = 	    par.lambda1; % not more than 20 non-zeros coefficients
-param.lambda2       =       par.lambda2;
+% param.lambda2       =       par.lambda2;
 
 f = 0;
 
