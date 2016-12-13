@@ -14,8 +14,8 @@ par.nIter           =       100;
 par.epsilon         =       1e-3;
 % par.Layer = 2;
 % tunable parameters
-for lambda1 = [0.04 0.03 0.02 0.01]
-    for lambda2 = [0.005]
+for lambda1 = [0.03]
+    for lambda2 = [0.01 0.001]
         lambda = [lambda1 lambda2];
         par.Layer = length(lambda);
         %% Coupled ODL
