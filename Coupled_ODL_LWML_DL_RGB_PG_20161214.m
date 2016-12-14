@@ -50,14 +50,14 @@ for lambda1 = [0.01 0.03]
                     CODL.DC{cls,L}  = Dc;
                     CODL.DN{cls,L}  = Dn;
                     CODL.f{cls,L}  = f;
-                    Dict_BID = sprintf('Data/Coupled_ODL_LWML_DL_RGB_PG_%s_%2.4f_%2.4f.mat',task,lambda1,lambda2,lambda3);
+                    Dict_BID = sprintf('Data/Coupled_ODL_LWML_DL_RGB_PG_%s_%2.4f_%2.4f_%2.4f.mat',task,lambda1,lambda2,lambda3);
                     save(Dict_BID,'CODL', 'PSNR', 'SSIM');
                 end
             end
             mPSNR = mean(PSNR);
             mSSIM = mean(SSIM);
             fprintf('The %d-th final PSNR = %2.4f, SSIM = %2.4f. \n', L, PSNR(cls ,L+1), SSIM(cls ,L+1) );
-            Dict_BID = sprintf('Data/Coupled_ODL_LWML_DL_RGB_PG_%s_%2.4f_%2.4f.mat',task,lambda1,lambda2,lambda3);
+            Dict_BID = sprintf('Data/Coupled_ODL_LWML_DL_RGB_PG_%s_%2.4f_%2.4f_%2.4f.mat',task,lambda1,lambda2,lambda3);
             save(Dict_BID,'CODL', 'PSNR', 'SSIM','mPSNR','mSSIM');
         end
     end
