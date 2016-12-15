@@ -17,8 +17,9 @@ par.epsilon         =       1e-3;
 for lambda1 = [0.01]
     for lambda2 = [0.001]
         for lambda3 = [0.001]
-            for lambda4 = [0.001 0.003 0.005 0.01 0.02]
-                lambda = [lambda1, lambda2, lambda3,lambda4];
+            for lambda4 = [0.001]
+                for lambda5 = [0.001 0.003 0.005 0.01]
+                lambda = [lambda1, lambda2, lambda3,lambda4,lambda5];
                 par.Layer = length(lambda);
                 %% Coupled ODL
                 PSNR = zeros(par.cls_num, par.Layer+1);
@@ -51,14 +52,14 @@ for lambda1 = [0.01]
                         CODL.DC{cls,L}  = Dc;
                         CODL.DN{cls,L}  = Dn;
                         CODL.f{cls,L}  = f;
-                        Dict_BID = sprintf('Data/Coupled_ODL_LWML_DL_RGB_PG_%s_%2.4f_%2.4f_%2.4f_%2.4f.mat',task,lambda1,lambda2,lambda3,lambda4);
+                        Dict_BID = sprintf('Data/Coupled_ODL_LWML_DL_RGB_PG_%s_%2.4f_%2.4f_%2.4f_%2.4f_%2.4f.mat',task,lambda1,lambda2,lambda3,lambda4,lambda5);
                         save(Dict_BID,'CODL', 'PSNR', 'SSIM');
                     end
                 end
                 mPSNR = mean(PSNR);
                 mSSIM = mean(SSIM);
                 fprintf('The %d-th final PSNR = %2.4f, SSIM = %2.4f. \n', L, PSNR(cls ,L+1), SSIM(cls ,L+1) );
-                Dict_BID = sprintf('Data/Coupled_ODL_LWML_DL_RGB_PG_%s_%2.4f_%2.4f_%2.4f_%2.4f.mat',task,lambda1,lambda2,lambda3,lambda4);
+                Dict_BID = sprintf('Data/Coupled_ODL_LWML_DL_RGB_PG_%s_%2.4f_%2.4f_%2.4f_%2.4f_%2.4f.mat',task,lambda1,lambda2,lambda3,lambda4,lambda5);
                 save(Dict_BID,'CODL', 'PSNR', 'SSIM','mPSNR','mSSIM');
             end
         end
