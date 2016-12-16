@@ -11,8 +11,7 @@ load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num            =    cls_num;
 par.ps                =   6;
 par.nIter           =       100;
-par.epsilon         =       1e-3;
-% par.Layer = 2;
+par.epsilon         =       1e-4;
 % tunable parameters
 for lambda1 = [0.01]
     for lambda2 = [0.001]
