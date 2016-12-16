@@ -18,7 +18,7 @@ for lambda1 = [0.01]
     for lambda2 = [0.001]
         for lambda3 = [0.001]
             for lambda4 = [0.001]
-                for lambda5 = [0.001 0.003 0.005 0.01]
+                for lambda5 = [0.003]
                     lambda = [lambda1, lambda2, lambda3,lambda4,lambda5];
                     par.Layer = length(lambda);
                     %% Coupled ODL
