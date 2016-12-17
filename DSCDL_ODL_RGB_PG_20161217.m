@@ -43,6 +43,6 @@ for i = 1 : par.cls_num
     DSCDL.UC{i} = Uc;
     DSCDL.UN{i} = Un;
     DSCDL.f{i} = f;
-    Dict_BID = sprintf('Data/DSCDL_ODL_RGB_PG_%s_20161217mat',task);
+    Dict_BID = sprintf('Data/DSCDL_ODL_RGB_PG_%s_20161217.mat',task);
     save(Dict_BID,'DSCDL');
 end
