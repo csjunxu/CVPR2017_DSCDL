@@ -7,8 +7,8 @@ for t = 1 : par.nInnerLoop
     param.lambda = par.lambda(t);
     if mod(t -1,2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
-        AN = zeros(par.K, size(nDCnlYH, 2));
-        AC = zeros(par.K, size(nDCnlYH, 2));
+        AN = zeros(par.ps^2*par.ch, size(nDCnlYH, 2));
+        AC = zeros(par.ps^2*par.ch, size(nDCnlYH, 2));
         %% GMM: full posterior calculation
         nPG = size(nDCnlYH,2)/par.nlsp; % number of PGs
         PYZ = zeros(model.nmodels,nPG);
