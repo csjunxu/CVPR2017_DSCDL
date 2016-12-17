@@ -1,9 +1,8 @@
 clear;
 addpath('Data');
 addpath('Utilities');
-addpath('SPAMS');
 
-task = 'BID';
+task = 'RID';
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 % Parameters Setting
 par.cls_num            =    cls_num;
