@@ -35,9 +35,9 @@ for i = 1 : par.cls_num
         %% Initialization of Dictionaries and Coefficients
     [Dn,~,~] = svd(cov(XN'));
     [Dc,~,~] = svd(cov(XC'));
-    Alphan = Dn' * XN;
-    Alphac = Dc' * XC;
-    [Alphac, Alphan, Dc, Dn, Uc, Un, f] = Double_Semi_Coupled_ODL(Alphac, Alphan, XC, XN, Dc, Dn, par);
+    An = Dn' * XN;
+    Ac = Dc' * XC;
+    [Ac, An, Dc, Dn, Uc, Un, f] = Double_Semi_Coupled_ODL(Ac, An, XC, XN, Dc, Dn, par);
     DSCDL.DC{i} = Dc;
     DSCDL.DN{i} = Dn;
     DSCDL.UC{i} = Uc;
