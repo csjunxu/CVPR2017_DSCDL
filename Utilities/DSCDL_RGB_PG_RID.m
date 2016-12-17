@@ -1,9 +1,10 @@
-function im_out = DSCDL_RGB_PG_RID(IMin,IM_GT,model,DSCDL,par,param)
+function [im_out, par] = DSCDL_RGB_PG_RID(IMin,IM_GT,model,DSCDL,par,param)
 %% modified on 20161207 
-
+param.lambda2 = par.lambda2;
 %% Initialization
 im_out = IMin;
 for t = 1 : par.nInnerLoop
+    param.lambda = par.lambda(t);
     if mod(t -1,2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
         AN = zeros(par.K, size(nDCnlYH, 2));
