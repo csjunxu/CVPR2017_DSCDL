@@ -15,7 +15,7 @@ im_num = length(TT_im_dir);
 
 %% load parameters and dictionary
 load Data/params.mat par param;
-load Data/DSCDL_ODL_RGB_PG_RID_20161217.mat DSCDL;
+load Data/DSCDL_Dict_RGB_PGs_10_6x6_33_BID_20161006.mat DSCDL;
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
 par.nInnerLoop = 4;
