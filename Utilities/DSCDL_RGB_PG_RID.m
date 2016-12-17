@@ -4,7 +4,7 @@ param.lambda2 = par.lambda2;
 %% Initialization
 im_out = IMin;
 for t = 1 : par.nInnerLoop
-    param.lambda = par.lambda(t);
+    param.lambda = par.lambda;
     if mod(t -1,2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
         AN = zeros(par.ps^2*par.ch, size(nDCnlYH, 2));
