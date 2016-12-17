@@ -32,12 +32,12 @@ for i = 1 : par.cls_num
         XC = XC(:,1:2e4);
     end
     fprintf('DSCDL_RGB_PGs: Cluster: %d\n', i);
-        %% Initialization of Dictionaries and Coefficients
+    %% Initialization of Dictionaries and Coefficients
     [Dn,~,~] = svd(cov(XN'));
     [Dc,~,~] = svd(cov(XC'));
     An = Dn' * XN;
-    Ac = Dc' * XC;
-    [Ac, An, Dc, Dn, Uc, Un, f] = Double_Semi_Coupled_ODL(Ac, An, XC, XN, Dc, Dn, par);
+    Ac = Dc' * XC; 
+    [Dc, Dn, Ac, An, Uc, Un, f] = Double_Semi_Coupled_ODL(XC, XN, Dc, Dn, Ac, An, par);
     DSCDL.DC{i} = Dc;
     DSCDL.DN{i} = Dn;
     DSCDL.UC{i} = Uc;
