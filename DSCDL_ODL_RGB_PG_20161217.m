@@ -26,20 +26,19 @@ param.lambda2 = par.lambda2;
 param.iter=300;
 param.L = par.ps^2;
 for i = 1 : par.cls_num
-    XN_t = double(Xn{i});
-    XC_t = double(Xc{i});
-    if size(XN_t, 2)>2e4
-        XN_t = XN_t(:,1:2e4);
-        XC_t = XC_t(:,1:2e4);
+    XN = double(Xn{i});
+    XC = double(Xc{i});
+    if size(XN, 2)>2e4
+        XN = XN(:,1:2e4);
+        XC = XC(:,1:2e4);
     end
     fprintf('DSCDL_RGB_PGs: Cluster: %d\n', i);
-    D = mexTrainDL([XN_t;XC_t], param);
-    Dn = D(1:size(XN_t,1),:);
-    Dc = D(size(XN_t,1)+1:end,:);
-    Alphac = mexLasso([XN_t;XC_t], D, param);
-    Alphan = Alphac;
-    clear D;
-    [Alphac, Alphan, XC_t, XN_t, Dc, Dn, Uc, Un, f] = Double_Semi_Coupled_ODL(Alphac, Alphan, XC_t, XN_t, Dc, Dn, par);
+        %% Initialization of Dictionaries and Coefficients
+    [Dn,~,~] = svd(cov(XN'));
+    [Dc,~,~] = svd(cov(XC'));
+    Alphan = Dn' * XN;
+    Alphac = Dc' * XC;
+    [Alphac, Alphan, XC, XN, Dc, Dn, Uc, Un, f] = Double_Semi_Coupled_ODL(Alphac, Alphan, XC, XN, Dc, Dn, par);
     DSCDL.DC{i} = Dc;
     DSCDL.DN{i} = Dn;
     DSCDL.UC{i} = Uc;
