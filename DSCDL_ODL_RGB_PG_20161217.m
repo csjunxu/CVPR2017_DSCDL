@@ -4,7 +4,7 @@ addpath('Utilities');
 addpath('SPAMS');
 
 task = 'BID';
-load Data/GMM_RGB_PGs_10_6x6_33_20161006T220226.mat;
+load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 % Parameters Setting
 par.cls_num            =    cls_num;
 par.step               =    3;
