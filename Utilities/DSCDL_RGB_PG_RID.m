@@ -41,22 +41,22 @@ for t = 1 : par.nInnerLoop
         Xn    = nDCnlXN(:, idx);
         Dc    = DSCDL.DC{cls};
         Dn    = DSCDL.DN{cls};
-        Uc    = DSCDL.UC{cls};
-        Un    = DSCDL.UN{cls};
+        Pc    = DSCDL.PC{cls};
+        Pn    = DSCDL.PN{cls};
         if (t == 1)
             Alphan = mexLasso(Xn, Dn, param);
-            Alphac = Uc \ Un * Alphan;
+            Alphac = Pc \ Pn * Alphan;
             Xc = Dc * Alphac;
         else
             Alphac = AC(:, idx);
         end
         %% Transformation
-        D = [Dn; par.sqrtmu * Un];
-        Y = [Xn; par.sqrtmu * Uc * full(Alphac)];
+        D = [Dn; par.sqrtmu * Pn];
+        Y = [Xn; par.sqrtmu * Pc * full(Alphac)];
         Alphan = mexLasso(Y, D,param);
         clear Y D;
-        D = [Dc; par.sqrtmu * Uc];
-        Y = [Xc; par.sqrtmu * Un * full(Alphan)];
+        D = [Dc; par.sqrtmu * Pc];
+        Y = [Xc; par.sqrtmu * Pn * full(Alphan)];
         Alphac = full(mexLasso(Y, D,param));
         clear Y D;
         %% Reconstruction
