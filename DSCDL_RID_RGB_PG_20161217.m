@@ -20,13 +20,11 @@ load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
 par.nInnerLoop = 4;
 for lambda = 0.005:0.005:0.02
-    param.lambda = lambda;
+    par.lambda = lambda;
     for lambda2 = [0.001]
-        param.lambda2 = lambda2;
+        par.lambda2 = lambda2;
         for sqrtmu = 0.01
             par.sqrtmu = sqrtmu;
-            PSNR = [];
-            SSIM = [];
             CCPSNR = [];
             CCSSIM = [];
             for i = 1:im_num
