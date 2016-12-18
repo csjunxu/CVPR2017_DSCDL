@@ -1,6 +1,6 @@
 function [im_out, par] = Coupled_ODL_RGB_PG_ML_RID(IMin,IM_GT,model,CODL,par,param)
 %% modified on 20161208
-param.lambda2 = par.lambda2;
+param.lambda2 = par.lambda0;
 %% Initialization
 im_out = IMin;
 for t = 1 : par.Layer
