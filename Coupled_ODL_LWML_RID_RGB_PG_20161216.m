@@ -14,7 +14,7 @@ TT_im_dir  = dir(TT_fpath);
 im_num = length(TT_im_dir);
 
 %% load parameters and dictionary
-load Data/params.mat par par;
+load Data/params.mat par param;
 load Data/Coupled_ODL_LWML_DL_RGB_PG_BID_0.0100_0.0010_0.0010_0.0010.mat CODL;
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
@@ -24,29 +24,32 @@ for lambda1 = [0.01 0.03 0.05]
         for lambda3 = [0.01 0.03 0.05]
             for lambda4 = [0.01 0.03 0.05]
                 par.lambda = [lambda1,lambda2,lambda3,lambda4];
-                CCPSNR = [];
-                CCSSIM = [];
-                for i = 1:im_num
-                    IM_GT = im2double(imread(fullfile(GT_Original_image_dir, GT_im_dir(i).name)));
-                    IMin = im2double(imread(fullfile(TT_Original_image_dir, TT_im_dir(i).name)));
-                    S = regexp(TT_im_dir(i).name, '\.', 'split');
-                    IMname = S{1};
-                    fprintf('%s : \n',IMname);
-                    CCPSNR = [CCPSNR csnr( IMin*255,IM_GT*255, 0, 0 )];
-                    CCSSIM = [CCSSIM cal_ssim( IMin*255, IM_GT*255, 0, 0 )];
-                    fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n',CCPSNR(end), CCSSIM(end));
-                    [h,w,ch] = size(IMin);
-                    par.IMindex = i;
-                    [IMout, par] = Coupled_ODL_RGB_PG_ML_RID(IMin,IM_GT,model,CODL,par);
-                    %% output
-                    % imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
+                for lambda0 = 0.01 %[0.001 0.005 0.01 0.02]
+                    par.lambda0 = lambda0;
+                    CCPSNR = [];
+                    CCSSIM = [];
+                    for i = 1:im_num
+                        IM_GT = im2double(imread(fullfile(GT_Original_image_dir, GT_im_dir(i).name)));
+                        IMin = im2double(imread(fullfile(TT_Original_image_dir, TT_im_dir(i).name)));
+                        S = regexp(TT_im_dir(i).name, '\.', 'split');
+                        IMname = S{1};
+                        fprintf('%s : \n',IMname);
+                        CCPSNR = [CCPSNR csnr( IMin*255,IM_GT*255, 0, 0 )];
+                        CCSSIM = [CCSSIM cal_ssim( IMin*255, IM_GT*255, 0, 0 )];
+                        fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n',CCPSNR(end), CCSSIM(end));
+                        [h,w,ch] = size(IMin);
+                        par.IMindex = i;
+                        [IMout, par] = Coupled_ODL_RGB_PG_ML_RID(IMin,IM_GT,model,CODL,par);
+                        %% output
+                        % imwrite(IMout, ['results/DSCDL_' IMname '_' num2str(lambda) '_' num2str(lambda2) '_' num2str(sqrtmu) '.png']);
+                    end
+                    PSNR = par.PSNR;
+                    SSIM = par.SSIM;
+                    mPSNR = mean(PSNR);
+                    mSSIM = mean(SSIM);
+                    savename = ['Real_RID_CODL_LWML_' num2str(lambda1) '_' num2str(lambda2) '_' num2str(lambda3) '_' num2str(lambda4) '_' num2str(lambda0) '.mat'];
+                    save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
                 end
-                PSNR = par.PSNR;
-                SSIM = par.SSIM;
-                mPSNR = mean(PSNR);
-                mSSIM = mean(SSIM);
-                savename = ['Real_RID_CODL_LWML_' num2str(lambda1) '_' num2str(lambda2) '_' num2str(lambda3) '_' num2str(lambda4) '.mat'];
-                save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
             end
         end
     end
