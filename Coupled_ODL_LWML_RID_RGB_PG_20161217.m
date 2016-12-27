@@ -19,13 +19,13 @@ load Data/Coupled_ODL_LWML_DL_RGB_PG_BID_0.0100_0.0010_0.0010_0.0010_0.0030.mat 
 load Data/GMM_RGB_PGs_10_6x6_33_20161205T230237.mat;
 par.cls_num = 31;
 par.Layer = 5;
-for lambda1 = [0.005 0.01]
-    for lambda2 = [0.005 0.01]
-        for lambda3 = [0.005 0.01]
-            for lambda4 = [0.005 0.01]
-                for lambda5 = [0.005 0.01]
+for lambda1 = [0.02 0.05]
+    for lambda2 = [0.02 0.05]
+        for lambda3 = [0.02 0.05]
+            for lambda4 = [0.02 0.05]
+                for lambda5 = [0.02 0.05]
                     par.lambda = [lambda1,lambda2,lambda3,lambda4,lambda5];
-                    for lambda0 = [0.001 0.005 0.01 0.02]
+                    for lambda0 = [0 0.005 0.01 0.05]
                         par.lambda0 = lambda0;
                         CCPSNR = [];
                         CCSSIM = [];
