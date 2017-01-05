@@ -21,11 +21,11 @@ par.cls_num = 31;
 par.Layers = 3;
 
 par.Layer = 1;
-par.lambda = zeros(par.cls_num,par.Layer);
+par.lambda = zeros(par.cls_num,par.Layers);
 for testcluster = 1:1:par.cls_num
     par.testcluster = testcluster;
     for lambda = 0.01:0.02:0.05
-        par.lambda(testcluster,1) = par.lambda;
+        par.lambda(testcluster,par.Layer) = lambda;
         CCPSNR = [];
         CCSSIM = [];
         for i = 1:im_num
