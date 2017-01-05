@@ -1,10 +1,9 @@
 function [im_out, par] = Coupled_ODL_RGB_PG_ML_RID(IMin,IM_GT,model,CODL,par,param)
-%% modified on 20161208
-param.lambda2 = par.lambda0;
+%% modified on 20170105
+% param.lambda2 = par.lambda0; % lambda2=0 is better
 %% Initialization
 im_out = IMin;
 for t = 1 : par.Layer
-    param.lambda = par.lambda(t);
     if mod(t -1,2) == 0
         [nDCnlYH,~,~,par] = Image2PGs( im_out, par );
         %% GMM: full posterior calculation
@@ -33,21 +32,27 @@ for t = 1 : par.Layer
     X_hat = zeros(par.ps^2*par.ch,par.maxr*par.maxc,'double');
     W = zeros(par.ps^2*par.ch,par.maxr*par.maxc,'double');
     for   i  = 1:length(seg)-1
-        idx          =   s_idx(seg(i)+1:seg(i+1));
-        cls       =   cls_idx(idx(1));
-        Xn    = nDCnlXN(:, idx);
-        Dc    = CODL.DC{cls,t};
-        Dn    = CODL.DN{cls,t};
-        %% use noisy data to obtain the coefficients
-        %    then reconstruct clean data
-        %         A = mexLasso(Xn, Dn, param);
-        %% use noisy and latent clean data for the coefficients
-        %    then reconstruct clean data
-        Xc = nDCnlXC(:, idx);
-        A = mexLasso([Xn;Xc], [Dn;Dc], param);
-        %% Reconstruction
-        Xc = Dc * A;
-        nDCnlXC(:, idx) = Xc;
+        idx = s_idx(seg(i)+1:seg(i+1));
+        cls  = cls_idx(idx(1));
+        Xn  = nDCnlXN(:, idx);
+        if cls == par.testcluster
+            fprintf('Cluster %d:\n', cls);
+            param.lambda = par.lambda(cls,par.Layer);
+            Dc  = CODL.DC{cls,t};
+            Dn  = CODL.DN{cls,t};
+            %% use noisy data to obtain the coefficients
+            %    then reconstruct clean data
+            %         A = mexLasso(Xn, Dn, param);
+            %% use noisy and latent clean data for the coefficients
+            %    then reconstruct clean data
+            Xc = nDCnlXC(:, idx);
+            A   = mexLasso([Xn;Xc], [Dn;Dc], param);
+            %% Reconstruction
+            Xc = Dc * A;
+            nDCnlXC(:, idx) = Xc;
+        else
+            nDCnlXC(:, idx) = Xn;
+        end
         X_hat(:,blk_arrXC(idx)) = X_hat(:,blk_arrXC(idx)) + nDCnlXC(:, idx) + DCXC(:,idx);
         W(:,blk_arrXC(idx))     = bsxfun(@plus,W(:,blk_arrXC(idx)),ones(par.ps^2*par.ch,length(idx)));
     end
