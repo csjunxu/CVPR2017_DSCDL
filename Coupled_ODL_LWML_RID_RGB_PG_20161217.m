@@ -22,9 +22,9 @@ par.Layers = 3;
 
 par.Layer = 1;
 par.lambda = zeros(par.cls_num,par.Layers);
-for testcluster = 1:1:par.cls_num
+for testcluster = 3
     par.testcluster = testcluster;
-    for lambda = 0.01:0.02:0.05
+    for lambda = 0.35:0.05:0.5
         par.lambda(testcluster,par.Layer) = lambda;
         CCPSNR = [];
         CCSSIM = [];
@@ -47,7 +47,7 @@ for testcluster = 1:1:par.cls_num
         SSIM = par.SSIM;
         mPSNR = mean(PSNR);
         mSSIM = mean(SSIM);
-        savename = ['Real_RID_CODL_LWML_3_1_' num2str(lambda) '.mat'];
+        savename = ['Real_RID_CODL_LWML_3_1_' num2str(testcluster) '_' num2str(lambda)  '.mat'];
         save(savename, 'mPSNR', 'mSSIM', 'PSNR', 'SSIM');
     end
 end
